@@ -1,0 +1,252 @@
+/* styles.css */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #121212;
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+header {
+  background-color: #1e1e1e;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.search-upload-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  gap: 10px;
+}
+
+#search-bar {
+  flex: 1;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+#upload-button {
+  padding: 10px 20px;
+  background-color: #6200ee;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+main {
+  padding: 20px;
+  flex: 1;
+  overflow-y: scroll;
+}
+
+.category-section {
+  margin-bottom: 40px;
+}
+
+.category-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.book-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.book-card {
+  background-color: #1e1e1e;
+  padding: 10px;
+  border-radius: 5px;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.book-card img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.book-card h3 {
+  font-size: 1rem;
+  margin: 10px 0 5px;
+}
+
+.book-card p {
+  font-size: 0.9rem;
+  margin: 0 0 10px;
+}
+
+.book-card button {
+  padding: 5px 10px;
+  background-color: #6200ee;
+  border: none;
+  border-radius: 3px;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 7px;
+  margin-bottom: px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+}
+
+.pagination button {
+  background-color: #6200ee;
+  border: none;
+  color: #fff;
+  padding: 10px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.pagination span {
+  font-size: 1.2rem;
+}
+
+#upload-form-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+#upload-form {
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 5px;
+  width: 90%;
+  max-width: 500px;
+  text-align: left;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-height: 90%;
+  overflow-y: auto;
+}
+
+#upload-form h2 {
+  margin-top: 0;
+  color: #fff;
+}
+
+#upload-form label {
+  display: block;
+  margin: 10px 0 5px;
+  color: #bbb;
+}
+
+#upload-form input[type="text"],
+#upload-form input[type="tel"],
+#upload-form input[type="email"],
+#upload-form input[type="number"],
+#upload-form textarea,
+#upload-form input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  background: #121212;
+  color: #fff;
+}
+
+#upload-form textarea {
+  height: 100px;
+  resize: none;
+}
+
+#upload-form fieldset {
+  border: 1px solid #333;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+#upload-form fieldset legend {
+  padding: 0 10px;
+  color: #fff;
+}
+
+#upload-form button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #6200ee;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+#upload-form button[type="button"] {
+  background-color: #444;
+  margin-left: 10px;
+}
+
+#upload-form button:hover {
+  background-color: #3700b3;
+}
+
+#upload-form button[type="button"]:hover {
+  background-color: #555;
+}
+
+/* Hide scrollbar styles */
+#upload-form-container::-webkit-scrollbar,
+#upload-form::-webkit-scrollbar,
+main::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+#upload-form-container,
+#upload-form,
+main {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+  .search-upload-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  #search-bar, #upload-button {
+    width: 100%;
+  }
+}

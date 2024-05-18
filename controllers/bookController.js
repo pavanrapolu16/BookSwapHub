@@ -1,6 +1,7 @@
 import db from '../config/firebaseConfig.js';
 
 export const addBook = async (req, res) => {
+    console.log(req.body)
     const { title, author, description, image, name, mobile, email, ID, class: userClass, language,category } = req.body;
 
     const bookId = `book_${Date.now()}`; // Generate unique ID using timestamp
@@ -22,6 +23,8 @@ export const addBook = async (req, res) => {
         },
         createdAt: new Date().toISOString()
     };
+
+    console.log(newBook)
 
     try {
         await db.collection('books').doc(bookId).set(newBook);

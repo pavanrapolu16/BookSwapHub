@@ -26,6 +26,7 @@ header h1 {
   margin: 0;
   font-size: 2rem;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .search-upload-container {
@@ -220,7 +221,23 @@ footer {
 }
 
 
+form input,
+form select,
+form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 12px;
+  border-radius: 5px;
+  background: #121212;
+  color: #fff;
+}
 
+form button {
+  margin-top: 20px;
+}
 
 /* Hide scrollbar styles */
 #upload-form-container::-webkit-scrollbar,

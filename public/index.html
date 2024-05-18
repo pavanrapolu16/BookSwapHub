@@ -9,7 +9,7 @@
 </head>
 <body>
   <header>
-    <h1 id="title" >BookSwapHub</h1>
+    <h1 id="BookSwapHub" >BookSwapHub</h1>
     <div class="search-upload-container">
       <input type="text" id="search-bar" placeholder="Search by title or author...">
       <button id="upload-button">Upload a Book</button>
@@ -36,17 +36,39 @@
       <label for="author">Author</label>
       <input type="text" id="author" name="author" required>
 
-      <label for="language">Language</label>
-      <input type="text" id="language" name="language" required>
-
+      
       <label for="description">Description</label>
       <textarea id="description" name="description" required></textarea>
-
+      
       <label for="image">Enter Image url</label>
       <input type="url" id="image" name="image" required>
-
+      
+      <!-- <label for="language">Language</label>
+      <input type="text" id="language" name="language" required>
       <label for="category">Category</label>
-      <input type="text" id="category" name="category" required>
+      <input type="text" id="category" name="category" required> -->
+
+      <label for="category">Category:</label>
+      <select id="category" name="category" required>
+          <option value="">Select a category</option>
+          <option value="Thriller">Thriller</option>
+          <option value="Horror">Horror</option>
+          <option value="Science Fiction">Science Fiction</option>
+          <option value="Romance">Romance</option>
+          <option value="Fiction">Fiction</option>
+          <option value="Business">Business</option>
+          <option value="Religious & Spiritual">Religious & Spiritual</option>
+          <!-- Add more categories as needed -->
+      </select>
+        
+      <label for="book-language">Language:</label>
+      <select id="book-language" name="language" required>
+          <option value="">Select a language</option>
+          <option value="English">English</option>
+          <option value="Telugu">Telugu</option>
+          <option value="Hindi">Hindi</option>
+          <!-- Add more languages as needed -->
+      </select>
 
       <fieldset>
         <legend>Contact Details</legend>
@@ -96,6 +118,7 @@
   </div>
   <script src="./js/book.js"></script>
   <script src="./js/search.js"></script>
+  <script src="./js/miscellaneous.js"></script>
   <script src="./js/uploadBookForm.js"></script>
   <script src="./js/askNowForm.js"></script>
 </body>

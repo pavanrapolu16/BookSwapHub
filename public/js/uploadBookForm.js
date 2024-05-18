@@ -14,6 +14,7 @@ document.getElementById('upload-form').addEventListener('submit', function(event
     ID: document.getElementById('ID').value,
     class: document.getElementById('class').value
   };
+  console.log(bookData)
 
   fetch('/api/books/uploadToDB', {
     method: 'POST',

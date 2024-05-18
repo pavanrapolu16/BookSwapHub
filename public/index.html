@@ -8,25 +8,26 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>BookSwapHub</h1>
-        <div class="search-upload-container">
-          <input type="text" id="search-bar" placeholder="Search by title or author...">
-          <button id="upload-button">Upload a Book</button>
-        </div>
-      </header>
+  <header>
+    <h1>BookSwapHub</h1>
+    <div class="search-upload-container">
+      <input type="text" id="search-bar" placeholder="Search by title or author...">
+      <button id="upload-button">Upload a Book</button>
+    </div>
+  </header>
   <main>
     <section class="category-section">
-        <div class="book-list">
-            <!-- book cards will be added dynamically here -->
-        </div>
+      <div class="book-list" id="book-list">
+        <!-- Book cards will be added here dynamically -->
+      </div>
     </section>
     <!-- Add more categories here -->
   </main>
   <footer>
-    <p>&copy; 2024 The Book Swap</p>
+    <p>&copy; 2024 BookSwapHub</p>
   </footer>
 
+  <!-- Upload Book Form Container -->
   <div id="upload-form-container">
     <form id="upload-form">
       <h2>Upload a Book</h2>
@@ -62,6 +63,30 @@
 
       <button type="submit">Submit</button>
       <button type="button" id="cancel-upload">Cancel</button>
+    </form>
+  </div>
+
+  <!-- Ask Now Form Container -->
+  <div id="ask-now-form-container">
+    <form id="ask-now-form">
+      <h2>Ask Now</h2>
+      <label for="ask-now-name">Name</label>
+      <input type="text" id="ask-now-name" name="ask-now-name" required>
+
+      <label for="ask-now-email">Email</label>
+      <input type="email" id="ask-now-email" name="ask-now-email" required>
+
+      <label for="ask-now-phone">Phone Number</label>
+      <input type="tel" id="ask-now-phone" name="ask-now-phone" required>
+
+      <label for="ask-now-id">ID</label>
+      <input type="text" id="ask-now-id" name="ask-now-id" required>
+
+      <label for="ask-now-class">Class</label>
+      <input type="text" id="ask-now-class" name="ask-now-class" required>
+
+      <button type="submit">Submit</button>
+      <button type="button" id="cancel-ask-now">Cancel</button>
     </form>
   </div>
 

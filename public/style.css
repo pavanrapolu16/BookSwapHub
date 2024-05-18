@@ -162,7 +162,7 @@ footer {
 #upload-form input[type="tel"],
 #upload-form input[type="email"],
 #upload-form textarea,
-#upload-form input[type="file"],
+#upload-form input[type="url"],
 #ask-now-form input[type="text"],
 #ask-now-form input[type="tel"],
 #ask-now-form input[type="email"] {

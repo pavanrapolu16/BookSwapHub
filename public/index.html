@@ -9,20 +9,19 @@
 </head>
 <body>
   <header>
-    <h1>BookSwapHub</h1>
+    <h1 id="title" >BookSwapHub</h1>
     <div class="search-upload-container">
       <input type="text" id="search-bar" placeholder="Search by title or author...">
       <button id="upload-button">Upload a Book</button>
     </div>
   </header>
   <main>
-    <section class="category-section">
-      <div class="book-list" id="book-list">
-        <!-- Book cards will be added here dynamically -->
-      </div>
-    </section>
-    <!-- Add more categories here -->
+    <div id="categories"></div>
+      <p id="no-books-message" style="display: none;">No books found</p>
+    <div id="languages"></div>
   </main>
+
+  
   <footer>
     <p>&copy; 2024 BookSwapHub</p>
   </footer>
@@ -37,11 +36,17 @@
       <label for="author">Author</label>
       <input type="text" id="author" name="author" required>
 
+      <label for="language">Language</label>
+      <input type="text" id="language" name="language" required>
+
       <label for="description">Description</label>
       <textarea id="description" name="description" required></textarea>
 
       <label for="image">Enter Image url</label>
       <input type="url" id="image" name="image" required>
+
+      <label for="category">Category</label>
+      <input type="text" id="category" name="category" required>
 
       <fieldset>
         <legend>Contact Details</legend>
@@ -90,7 +95,7 @@
     </form>
   </div>
   <script src="./js/book.js"></script>
-  <script src="./js/app.js"></script>
+  <script src="./js/search.js"></script>
   <script src="./js/uploadBookForm.js"></script>
   <script src="./js/askNowForm.js"></script>
 </body>

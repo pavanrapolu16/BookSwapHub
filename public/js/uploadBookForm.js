@@ -6,6 +6,8 @@ document.getElementById('upload-form').addEventListener('submit', function(event
     author: document.getElementById('author').value,
     description: document.getElementById('description').value,
     image: document.getElementById('image').value,
+    language: document.getElementById('language').value,
+    category: document.getElementById('category').value,
     name: document.getElementById('name').value,
     mobile: document.getElementById('mobile').value,
     email: document.getElementById('email').value,

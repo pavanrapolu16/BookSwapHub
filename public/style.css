@@ -59,6 +59,8 @@ main {
 }
 
 .category-section {
+  display: block;
+    width: 100%;
   margin-bottom: 40px;
 }
 
@@ -73,6 +75,7 @@ main {
   padding: 10px;
   border-radius: 5px;
   width: 150px;
+  height: 370px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -103,13 +106,21 @@ main {
   border-radius: 3px;
   color: #fff;
   cursor: pointer;
-  margin-top: 7px;
+  margin-top: auto;
   margin-bottom: 7px;
 }
 
 footer {
   text-align: center;
   padding: 20px;
+}
+
+#no-books-message {
+  display: none; /* Initially hidden */
+  font-size: 3em; /* Larger text */
+  text-align: center; /* Center text */
+  margin-top: 50px; /* Add some space at the top */
+  color: #fff; /* Optional: adjust color as needed */
 }
 
 #upload-form-container,
@@ -230,27 +241,66 @@ main {
 
 /* Responsive styles */
 @media (max-width: 600px) {
-  .search-upload-container {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
+  header {
+    padding: 10px; /* Adjust padding for smaller screens */
   }
 
-  #search-bar, #upload-button {
-    width: 100%;
+  .search-upload-container {
+    flex-direction: column; /* Arrange search and upload button vertically */
   }
-  
+
+  #search-bar {
+    width: 100%; /* Make search bar full-width on mobile */
+  }
+
+  #upload-button {
+    width: 100%; /* Make upload button full-width on mobile */
+  }
+
+  .category-section, .language-section {
+    margin-bottom: 30px; /* Add spacing between category/language sections */
+  }
+
   .book-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    flex-direction: row;
-    justify-content: center;
+    justify-content: center; /* Center all book cards */
   }
+
   .book-card {
-    padding: 10px;
-    width: 70vw;
-    display: flex;
+    height: auto;
+    max-height: 600px;
+    width: 70%; /* Ensure two cards per row */
+    margin-bottom: 20px; /* Add spacing between book cards */
+  }
+
+  .book-card.center {
+    margin: 0 auto; /* Center the specific book card */
+    width: 70%; /* Adjust width as needed */
+  }
+
+  .book-card img {
+    width: auto;
+    max-width: 90vw;
+    height: auto; /* Ensure images maintain aspect ratio */
+    max-height: 400px; /* Limit image height for consistency */
+  }
+
+  .book-card h3 {
+    font-size: 0.9rem; /* Reduce title font size for mobile */
+  }
+
+  .book-card p {
+    font-size: 0.8rem; /* Reduce author font size for mobile */
+  }
+
+  .book-card button {
+    font-size: 0.8rem; /* Reduce button font size for mobile */
+  }
+
+  
+  footer{
+    margin-bottom: 40px;
   }
   
 }

@@ -5,7 +5,7 @@ document.getElementById('upload-form').addEventListener('submit', async function
   const formData = new FormData();
   formData.append('image', document.getElementById('image').files[0]);
 
-  const response = await fetch('http://localhost:3000/api/upload-image', {
+  const response = await fetch('/api/upload-image', {
       method: 'POST',
       body: formData
     });
@@ -44,6 +44,7 @@ document.getElementById('upload-form').addEventListener('submit', async function
       document.getElementById('upload-form-container').style.opacity = '0';
       // Optionally, add the new book to the book list dynamically
       createBookCard(data.bookId, bookData.title, bookData.author, bookData.image);
+      window.location.reload();
     }
   })
   .catch(error => {

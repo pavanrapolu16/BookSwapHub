@@ -26,7 +26,6 @@ export const addBook = async (req, res) => {
         createdAt: new Date().toISOString()
     };
 
-    console.log(newBook)
 
     try {
         await db.collection('books').doc(bookId).set(newBook);
@@ -47,7 +46,6 @@ export const getBooks = async (req, res) => {
       id: doc.id,
       ...doc.data()
     }));
-    console.log("sucessfully fetched books!" )
     res.status(200).json(books);
   } catch (error) {
     console.log("error in fetching books!",error )

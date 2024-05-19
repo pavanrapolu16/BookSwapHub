@@ -1,5 +1,6 @@
 document.getElementById('upload-form').addEventListener('submit', async function(event) {
   event.preventDefault();
+  document.getElementById('loading').style.display = 'flex';
 
   // Create a FormData object to handle file upload
   const formData = new FormData();

@@ -41,12 +41,8 @@
       <textarea id="description" name="description" required></textarea>
       
       <label for="image">Enter Image url</label>
-      <input type="url" id="image" name="image" required>
+      <input type="file" id="image" accept="image/*" required>
       
-      <!-- <label for="language">Language</label>
-      <input type="text" id="language" name="language" required>
-      <label for="category">Category</label>
-      <input type="text" id="category" name="category" required> -->
 
       <label for="category">Category:</label>
       <select id="category" name="category" required>
@@ -61,8 +57,8 @@
           <!-- Add more categories as needed -->
       </select>
         
-      <label for="book-language">Language:</label>
-      <select id="book-language" name="language" required>
+      <label for="language">Language:</label>
+      <select id="language" name="language" required>
           <option value="">Select a language</option>
           <option value="English">English</option>
           <option value="Telugu">Telugu</option>

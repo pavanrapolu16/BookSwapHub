@@ -1,11 +1,24 @@
-document.getElementById('upload-form').addEventListener('submit', function(event) {
+document.getElementById('upload-form').addEventListener('submit', async function(event) {
   event.preventDefault();
+
+  // Create a FormData object to handle file upload
+  const formData = new FormData();
+  formData.append('image', document.getElementById('image').files[0]);
+
+  const response = await fetch('http://localhost:3000/api/upload-image', {
+      method: 'POST',
+      body: formData
+    });
+  const data = await response.json();
+
+  // Extract the imageUrl from the response
+  const imageUrl = data.imageUrl;
 
   const bookData = {
     title: document.getElementById('title').value,
     author: document.getElementById('author').value,
     description: document.getElementById('description').value,
-    image: document.getElementById('image').value,
+    image: imageUrl,
     language: document.getElementById('language').value,
     category: document.getElementById('category').value,
     name: document.getElementById('name').value,

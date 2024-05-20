@@ -6,4 +6,4 @@ document.getElementById('BookSwapHub').addEventListener('click', function() {
 const currentYear = new Date().getFullYear();
 
 // Update the span element with the current year
-document.getElementById('current-year').textContent = currentYear;
+document.getElementById('current-year').textContent = currentYear; 

@@ -21,10 +21,20 @@ function createBookCard(id, title, author, image, language, category) {
   bookCard.appendChild(lang);
 
   const button = document.createElement('button');
+  button.id="ask-now-button"
   button.textContent = 'Ask Now';
   button.addEventListener('click', function() {
-      document.getElementById('ask-now-form-container').style.visibility = 'visible';
-      document.getElementById('ask-now-form-container').style.opacity = '1';
+        document.getElementById('terms-popup').style.display = 'flex';
+        document.getElementById('accept-terms-button').addEventListener('click', function() {
+        document.getElementById('terms-popup').style.display = 'none';
+        document.getElementById('ask-now-form-container').style.visibility = 'visible';
+        document.getElementById('ask-now-form-container').style.opacity = '1';
+      });
+      
+      document.getElementById('cancel-terms-button').addEventListener('click', function() {
+        document.getElementById('terms-popup').style.display = 'none';
+      });
+      
       document.getElementById('ask-now-form').dataset.bookId = id; // Store the book ID
   });
   bookCard.appendChild(button);

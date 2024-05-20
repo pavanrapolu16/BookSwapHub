@@ -34,10 +34,12 @@ function createBookCard(id, title, author, image, language, category) {
 
 // Function to fetch books from the server
 function fetchBooks() {
+  document.getElementById('loading').style.display = 'flex';
   fetch('/api/books')
       .then(response => response.json())
       .then(books => {
           displayBooksByCategory(books);
+          document.getElementById('loading').style.display = 'none';
       })
       .catch(error => console.error('Error fetching books:', error));
 }

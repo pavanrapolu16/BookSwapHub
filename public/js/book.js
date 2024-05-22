@@ -32,24 +32,43 @@ function createBookCard(id, title, author, image, language, category) {
   lang.textContent = `Language: ${language}`;
   bookCard.appendChild(lang);
 
+  const newBox=document.createElement('div');
+
   const button = document.createElement('button');
   button.id="ask-now-button"
   button.textContent = 'Ask Now';
+  button.style.marginRight="10px"
   button.addEventListener('click', function() {
-        document.getElementById('terms-popup').style.display = 'flex';
-        document.getElementById('accept-terms-button').addEventListener('click', function() {
-        document.getElementById('terms-popup').style.display = 'none';
-        document.getElementById('ask-now-form-container').style.visibility = 'visible';
-        document.getElementById('ask-now-form-container').style.opacity = '1';
-      });
-      
-      document.getElementById('cancel-terms-button').addEventListener('click', function() {
-        document.getElementById('terms-popup').style.display = 'none';
-      });
-      
-      document.getElementById('ask-now-form').dataset.bookId = id; // Store the book ID
+    document.getElementById('terms-popup').style.display = 'flex';
+    document.getElementById('accept-terms-button').addEventListener('click', function() {
+      document.getElementById('terms-popup').style.display = 'none';
+      document.getElementById('ask-now-form-container').style.visibility = 'visible';
+      document.getElementById('ask-now-form-container').style.opacity = '1';
+    });
+    document.getElementById('cancel-terms-button').addEventListener('click', function() {
+      document.getElementById('terms-popup').style.display = 'none';
+    });
+    document.getElementById('ask-now-form').dataset.bookId = id; // Store the book ID
   });
-  bookCard.appendChild(button);
+  newBox.appendChild(button);
+
+  const viewMorebutton = document.createElement('button');
+  viewMorebutton.id="view-more-button"
+  viewMorebutton.textContent = 'View More';
+  viewMorebutton.style.marginLeft="10px"
+  viewMorebutton.dataset.bookId=id;
+  viewMorebutton.addEventListener('click', () => {
+    const bookId = viewMorebutton.dataset.bookId;
+    console.log(bookId);
+    showLoading("Loading Book details");
+    // Navigate to the new page
+    window.location.href = `/api/books/viewMore/${bookId}`;
+  });
+  newBox.appendChild(viewMorebutton);
+
+  bookCard.appendChild(newBox)
+
+  
 
   return bookCard;
 }

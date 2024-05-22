@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookSwapHub - <%= book.title %></title>
+  <link rel="icon" type="image/png" href="/BookSwapHubLogo.png">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <h1 id="BookSwapHub">BookSwapHub</h1>
+  </header>
+  <main>
+    <div class="book-detail-container">
+      <div class="book-image">
+        <img src="<%= book.image %>" alt="<%= book.title %>">
+      </div>
+      <div class="book-info">
+        <h3><%= book.title %></h3>
+        <p><strong>Author:</strong> <%= book.author %></p>
+        <p><strong>Description:</strong> <%= book.description %></p>
+        <p><strong>Language:</strong> <%= book.language %></p>
+        <p><strong>Category:</strong> <%= book.category %></p>
+        <!-- <p><strong>Owner:</strong> <%= book.owner.name %></p>
+        <p><strong>Contact:</strong> <%= book.owner.mobile %>, <%= book.owner.email %></p>
+        <p><strong>ID:</strong> <%= book.owner.ID %></p>
+        <p><strong>Class:</strong> <%= book.owner.class %></p> -->
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p id="footer-year">&copy; <span id="current-year"></span> BookSwapHub</p>
+  </footer>
+
+  <script src="/js/book.js"></script>
+  <script src="/js/search.js"></script>
+  <script src="/js/miscellaneous.js"></script>
+  <script src="/js/uploadBookForm.js"></script>
+  <script src="/js/askNowForm.js"></script>
+  <script src="/js/viewMore.js"></script>
+</body>
+</html>

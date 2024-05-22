@@ -75,8 +75,9 @@ main {
   background-color: #1e1e1e;
   padding: 10px;
   border-radius: 5px;
-  width: 150px;
-  height: 370px;
+  width: 200px;
+  height: auto;
+  max-height: 600px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -333,6 +334,64 @@ main {
 
 
 
+.book-detail-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+  align-items: flex-start;
+}
+
+.book-image {
+  flex: 0 0 40%; /* Fix width for image container */
+  display: flex;
+  justify-content: center;
+}
+
+.book-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.book-info {
+  flex: 1; /* Allow book-info to take the remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  color: #fff;
+}
+
+.book-info h3 {
+  font-size: 2rem;
+  margin: 0 0 10px;
+}
+
+.book-info p {
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+/* Responsive styling */
+@media (max-width: 600px) {
+  .book-detail-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .book-image, .book-info {
+    width: 100%;
+    text-align: center;
+  }
+
+  .book-info h3 {
+    font-size: 1.5rem;
+  }
+
+  .book-info p {
+    font-size: 0.9rem;
+  }
+}
 
 
 /* Responsive styles */

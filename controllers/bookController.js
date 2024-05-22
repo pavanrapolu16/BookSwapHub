@@ -52,3 +52,20 @@ export const getBooks = async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch books', error });
   }
 };
+
+
+// New route for rendering book details page
+export const viewMorePage = async (req, res) => {
+  const bookId = req.params.bookId;
+  try {
+      const bookDoc = await db.collection('books').doc(bookId).get();
+      if (!bookDoc.exists) {
+          return res.status(404).send('Book not found');
+      }
+      const bookData = bookDoc.data();
+      res.render('viewMoreBookDetails', { book: bookData });
+  } catch (error) {
+      console.error('Error fetching book details:', error);
+      res.status(500).send('Failed to fetch book details');
+  }
+};

@@ -1,3 +1,15 @@
+const showLoading = (message) => {
+    document.getElementById('loading').style.display = 'flex';
+    document.getElementById('loading-overlay').style.display = 'flex';
+    document.getElementById('loading-message').textContent = message;
+  };
+
+  const hideLoading = () => {
+    document.getElementById('loading-overlay').style.display = 'none';
+    document.getElementById('loading').style.display = 'none';
+
+  };
+
 // Function to create a book card
 function createBookCard(id, title, author, image, language, category) {
   const bookCard = document.createElement('div');
@@ -44,12 +56,12 @@ function createBookCard(id, title, author, image, language, category) {
 
 // Function to fetch books from the server
 function fetchBooks() {
-  document.getElementById('loading').style.display = 'flex';
+  showLoading('Loading Books...');
   fetch('/api/books')
       .then(response => response.json())
       .then(books => {
           displayBooksByCategory(books);
-          document.getElementById('loading').style.display = 'none';
+          hideLoading();
       })
       .catch(error => console.error('Error fetching books:', error));
 }

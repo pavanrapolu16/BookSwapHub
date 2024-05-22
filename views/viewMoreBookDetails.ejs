@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= book.title %> - BookSwapHub</title>
+  <title>BookSwapHub - <%= book.title %></title>
   <link rel="icon" type="image/png" href="/BookSwapHubLogo.png">
   <link rel="stylesheet" href="/style.css">
 </head>
@@ -26,18 +26,110 @@
         <p><strong>Contact:</strong> <%= book.owner.mobile %>, <%= book.owner.email %></p>
         <p><strong>ID:</strong> <%= book.owner.ID %></p>
         <p><strong>Class:</strong> <%= book.owner.class %></p> -->
+        <button id="ask-now-button">Ask Now</button>
       </div>
     </div>
   </main>
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+  </div>
+  <div id="loading-overlay" style="display: none;">
+    <div id="loading-message"></div>
+  </div>
   <footer>
     <p id="footer-year">&copy; <span id="current-year"></span> BookSwapHub</p>
   </footer>
 
-  <script src="/js/book.js"></script>
-  <script src="/js/search.js"></script>
-  <script src="/js/miscellaneous.js"></script>
-  <script src="/js/uploadBookForm.js"></script>
-  <script src="/js/askNowForm.js"></script>
-  <script src="/js/viewMore.js"></script>
+  <!-- Ask Now Form Container -->
+  <div id="ask-now-form-container">
+    <form id="ask-now-form">
+      <h2>Ask Now</h2>
+      <label for="ask-now-name">Name</label>
+      <input type="text" id="ask-now-name" name="ask-now-name" required>
+
+      <label for="ask-now-email">Email</label>
+      <input type="email" id="ask-now-email" name="ask-now-email" required>
+
+      <label for="ask-now-phone">Phone Number</label>
+      <input type="tel" id="ask-now-phone" name="ask-now-phone" required>
+
+      <label for="ask-now-id">ID</label>
+      <input type="text" id="ask-now-id" name="ask-now-id" required>
+
+      <label for="ask-now-class">Class</label>
+      <input type="text" id="ask-now-class" name="ask-now-class" required>
+
+      <button type="submit">Submit</button>
+      <button type="button" id="cancel-ask-now">Cancel</button>
+    </form>
+  </div>
+
+  
+  <script>
+    // Get the current URL
+    const currentURL = window.location.href;
+
+    // Split the URL by '/' and get the last element
+    const parts = currentURL.split('/');
+    const Book_ID = parts[parts.length - 1];
+
+    const showLoading = (message) => {
+      document.getElementById('loading').style.display = 'flex';
+      document.getElementById('loading-overlay').style.display = 'flex';
+      document.getElementById('loading-message').textContent = message;
+    };
+
+    const hideLoading = () => {
+      document.getElementById('loading-overlay').style.display = 'none';
+      document.getElementById('loading').style.display = 'none';
+    };
+
+    document.getElementById('ask-now-button').addEventListener('click', function() {
+      document.getElementById('ask-now-form-container').style.visibility = 'visible';
+      document.getElementById('ask-now-form-container').style.opacity = '1';
+    });
+
+    document.getElementById('cancel-ask-now').addEventListener('click', function() {
+      document.getElementById('ask-now-form-container').style.visibility = 'hidden';
+      document.getElementById('ask-now-form-container').style.opacity = '0';
+    });
+
+    document.getElementById('ask-now-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      showLoading('Requesting Book...');
+      const askNowData = {
+        bookId: Book_ID,
+        name: document.getElementById('ask-now-name').value,
+        email: document.getElementById('ask-now-email').value,
+        phone: document.getElementById('ask-now-phone').value,
+        id: document.getElementById('ask-now-id').value,
+        class: document.getElementById('ask-now-class').value
+      };
+
+      console.log(askNowData.bookId)
+
+      fetch('/api/ask-now', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(askNowData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        hideLoading();
+        alert(data.message);
+        if (data.message === 'Request submitted successfully!') {
+          document.getElementById('ask-now-form-container').style.visibility = 'hidden';
+          document.getElementById('ask-now-form-container').style.opacity = '0';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to submit request. Please try again.');
+      });
+    });
+    
+  </script>
 </body>
 </html>

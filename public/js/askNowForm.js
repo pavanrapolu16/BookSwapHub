@@ -1,5 +1,6 @@
 document.getElementById('ask-now-form').addEventListener('submit', function(event) {
   event.preventDefault();
+  document.getElementById('loading').style.display = 'flex';
 
   const askNowData = {
     bookId: document.getElementById('ask-now-form').dataset.bookId,
@@ -19,6 +20,7 @@ document.getElementById('ask-now-form').addEventListener('submit', function(even
   })
   .then(response => response.json())
   .then(data => {
+    document.getElementById('loading').style.display = 'none';
     alert(data.message);
     if (data.message === 'Request submitted successfully!') {
       document.getElementById('ask-now-form-container').style.visibility = 'hidden';

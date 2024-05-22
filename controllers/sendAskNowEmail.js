@@ -1,7 +1,8 @@
 import nodemailer from 'nodemailer';
 import dotenv from "dotenv"
 dotenv.config()
-import db from '../config/firebaseConfig.js';
+import admin from '../config/firebaseConfig.js';
+const db = admin.firestore();
 
 // Create a transporter using your email service provider's SMTP settings
 const transporter = nodemailer.createTransport({

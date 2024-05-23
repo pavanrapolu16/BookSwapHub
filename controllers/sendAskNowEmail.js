@@ -46,3 +46,29 @@ export const sendAskNowEmail = async (req, res) => {
     res.status(500).json({ message: 'Failed to send email', error });
   }
 };
+
+// Function to send email
+export const sendAskNowEmailByDetails = async (req, res) => {
+  const { ownerMail, bookTitle,name, email, phone, id, class: userClass } = req.body;
+
+  try {
+    const mailOptions = {
+      from: process.env.MAIL,
+      to: ownerMail,
+      subject: 'Book Request',
+      text: `You have a new book request for "${bookTitle}" from:
+      Name: ${name}
+      Email: ${email}
+      Phone: ${phone}
+      ID: ${id}
+      Class: ${userClass}`
+    };
+
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ message: 'Request submitted successfully!' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Failed to send email', error });
+  }
+};
+

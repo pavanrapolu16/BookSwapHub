@@ -22,10 +22,6 @@
         <p><strong>Description:</strong> <%= book.description %></p>
         <p><strong>Language:</strong> <%= book.language %></p>
         <p><strong>Category:</strong> <%= book.category %></p>
-        <!-- <p><strong>Owner:</strong> <%= book.owner.name %></p>
-        <p><strong>Contact:</strong> <%= book.owner.mobile %>, <%= book.owner.email %></p>
-        <p><strong>ID:</strong> <%= book.owner.ID %></p>
-        <p><strong>Class:</strong> <%= book.owner.class %></p> -->
         <button id="ask-now-button">Ask Now</button>
       </div>
     </div>
@@ -73,6 +69,8 @@
     const parts = currentURL.split('/');
     const Book_ID = parts[parts.length - 1];
 
+   const ownerMail='<%= book.owner.email %>'
+
     const showLoading = (message) => {
       document.getElementById('loading').style.display = 'flex';
       document.getElementById('loading-overlay').style.display = 'flex';
@@ -98,7 +96,8 @@
       event.preventDefault();
       showLoading('Requesting Book...');
       const askNowData = {
-        bookId: Book_ID,
+        ownerMail: ownerMail,
+        bookTitle:'<%= book.title %>',
         name: document.getElementById('ask-now-name').value,
         email: document.getElementById('ask-now-email').value,
         phone: document.getElementById('ask-now-phone').value,
@@ -108,7 +107,7 @@
 
       console.log(askNowData.bookId)
 
-      fetch('/api/ask-now', {
+      fetch('/api/ask-now/mail', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

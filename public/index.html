@@ -6,6 +6,14 @@
   <title>BookSwapHub</title>
   <link rel="icon" type="image/png" href="./BookSwapHubLogo.png">
   <link rel="stylesheet" href="style.css">
+  <!-- //for edge detection -->
+  <script async src="https://docs.opencv.org/4.x/opencv.js"></script>
+  <!-- Cropper.js JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+  <!-- Cropper.js CSS -->
+  <link  href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+
+
 </head>
 <body>
   <header>
@@ -92,6 +100,18 @@
       <button type="submit">Submit</button>
       <button type="button" id="cancel-upload">Cancel</button>
     </form>
+  </div>
+  
+  <!-- Cropping Modal -->
+  <div id="crop-modal" style="display:none;" class="crop-modal">
+    <div class="modal-content">
+      <h2>Crop Image</h2>
+      <div>
+        <img id="crop-image" src="" alt="Image for cropping">
+      </div>
+      <button id="crop-button">Crop and Upload</button>
+      <button id="cancel-crop">Cancel</button>
+    </div>
   </div>
 
   <!-- Ask Now Form Container -->

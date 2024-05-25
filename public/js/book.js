@@ -1,3 +1,10 @@
+
+
+function updateTotalBooksCount(count) {
+  const totalBooksCountElement = document.getElementById('total-books-count');
+  totalBooksCountElement.textContent = count;
+}
+
 const showLoading = (message) => {
     document.getElementById('loading').style.display = 'flex';
     document.getElementById('loading-overlay').style.display = 'flex';
@@ -154,6 +161,7 @@ const fetchBooksFromServerAndSave = async () => {
   try {
     const response = await fetch('/api/books');
     const books = await response.json();
+    updateTotalBooksCount(books.length);
     await saveBooksToCache(books);
     return books;
   } catch (error) {

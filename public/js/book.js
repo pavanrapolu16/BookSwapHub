@@ -89,8 +89,15 @@ const fetchBooksFromServer = async () => {
   }
 };
 
+// Function to remove owner details from books
+const removeOwnerDetails = (books) => {
+  return books.map(({ owner, ...bookWithoutOwner }) => bookWithoutOwner);
+};
+
+// Function to save books to cache without owner details
 const saveBooksToCache = (books) => {
-  localStorage.setItem(CACHE_KEY, JSON.stringify(books));
+  const booksWithoutOwner = removeOwnerDetails(books);
+  localStorage.setItem(CACHE_KEY, JSON.stringify(booksWithoutOwner));
   localStorage.setItem(CACHE_EXPIRY_KEY, Date.now() + CACHE_DURATION);
 };
 

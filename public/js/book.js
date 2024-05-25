@@ -74,16 +74,56 @@ function createBookCard(id, title, author, image, language, category) {
 }
 
 // Function to fetch books from the server
-function fetchBooks() {
+const CACHE_KEY = 'booksCache';
+const CACHE_EXPIRY_KEY = 'booksCacheExpiry';
+const CACHE_DURATION = 3600 * 1000; // 1 hour
+
+const fetchBooksFromServer = async () => {
+  try {
+    const response = await fetch('/api/books');
+    const books = await response.json();
+    return books;
+  } catch (error) {
+    console.error('Error fetching books:', error);
+    return null;
+  }
+};
+
+const saveBooksToCache = (books) => {
+  localStorage.setItem(CACHE_KEY, JSON.stringify(books));
+  localStorage.setItem(CACHE_EXPIRY_KEY, Date.now() + CACHE_DURATION);
+};
+
+const getBooksFromCache = () => {
+  const books = localStorage.getItem(CACHE_KEY);
+  const expiry = localStorage.getItem(CACHE_EXPIRY_KEY);
+
+  if (books && expiry && Date.now() < expiry) {
+    return JSON.parse(books);
+  }
+
+  return null;
+};
+
+const fetchAndDisplayBooks = async () => {
   showLoading('Loading Books...');
-  fetch('/api/books')
-      .then(response => response.json())
-      .then(books => {
-          displayBooksByCategory(books);
-          hideLoading();
-      })
-      .catch(error => console.error('Error fetching books:', error));
-}
+
+  let books = getBooksFromCache();
+  if (books) {
+    displayBooksByCategory(books);
+    hideLoading();
+  }
+
+  books = await fetchBooksFromServer();
+  if (books) {
+    saveBooksToCache(books);
+    displayBooksByCategory(books);
+  }
+
+  hideLoading();
+};
+
+window.onload = fetchAndDisplayBooks;
 
 // Function to display books categorized by genre and language
 function displayBooksByCategory(books) {
@@ -148,6 +188,3 @@ function displayBooksByCategory(books) {
       languagesContainer.appendChild(languageSection);
   }
 }
-
-// Call fetchBooks on page load
-window.onload = fetchBooks;

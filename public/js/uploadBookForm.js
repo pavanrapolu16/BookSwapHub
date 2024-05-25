@@ -71,65 +71,75 @@ document.getElementById('cancel-crop').addEventListener('click', function() {
     document.getElementById('crop-modal').style.display = 'none';
 });
 
-document.getElementById('upload-form').addEventListener('submit', async function(event) {
+
+// Function to update cache after uploading a new book
+const updateCacheWithNewBook = (newBook) => {
+    let books = getBooksFromCache();
+    if (books) {
+      books.push(newBook);
+      saveBooksToCache(books);
+    }
+  };
+  
+  document.getElementById('upload-form').addEventListener('submit', async function(event) {
     event.preventDefault();
     showLoading('Uploading Book...');
-
+  
     try {
-        let imageUrl = '';
-        if (imageBlob) {
-            const formData = new FormData();
-            formData.append('image', imageBlob, 'croppedImage.jpg');
-
-            const imageResponse = await fetch('/api/upload-image', {
-                method: 'POST',
-                body: formData,
-            });
-
-            const imageData = await imageResponse.json();
-            if (!imageResponse.ok) {
-                throw new Error(imageData.error || 'Failed to upload image');
-            }
-            imageUrl = imageData.imageUrl;
-        }
-
-        const bookData = {
-            title: document.getElementById('title').value,
-            author: document.getElementById('author').value,
-            description: document.getElementById('description').value,
-            image: imageUrl,
-            language: document.getElementById('language').value,
-            category: document.getElementById('category').value,
-            name: document.getElementById('name').value,
-            mobile: document.getElementById('mobile').value,
-            email: document.getElementById('email').value,
-            ID: document.getElementById('ID').value,
-            class: document.getElementById('class').value
-        };
-
-        const bookResponse = await fetch('/api/books/uploadToDB', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(bookData)
+      let imageUrl = '';
+      if (imageBlob) {
+        const formData = new FormData();
+        formData.append('image', imageBlob, 'croppedImage.jpg');
+  
+        const imageResponse = await fetch('/api/upload-image', {
+          method: 'POST',
+          body: formData,
         });
-
-        const bookResult = await bookResponse.json();
-        if (!bookResponse.ok) {
-            throw new Error(bookResult.error || 'Failed to upload book data');
+  
+        const imageData = await imageResponse.json();
+        if (!imageResponse.ok) {
+          throw new Error(imageData.error || 'Failed to upload image');
         }
-
-        alert('Book added successfully');
-        window.location.reload();
+        imageUrl = imageData.imageUrl;
+      }
+  
+      const bookData = {
+        title: document.getElementById('title').value,
+        author: document.getElementById('author').value,
+        description: document.getElementById('description').value,
+        image: imageUrl,
+        language: document.getElementById('language').value,
+        category: document.getElementById('category').value,
+        name: document.getElementById('name').value,
+        mobile: document.getElementById('mobile').value,
+        email: document.getElementById('email').value,
+        ID: document.getElementById('ID').value,
+        class: document.getElementById('class').value
+      };
+  
+      const bookResponse = await fetch('/api/books/uploadToDB', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bookData)
+      });
+  
+      const bookResult = await bookResponse.json();
+      if (!bookResponse.ok) {
+        throw new Error(bookResult.error || 'Failed to upload book data');
+      }
+  
+      alert('Book added successfully');
+      updateCacheWithNewBook(bookData); // Update cache with new book
+      window.location.reload();
     } catch (error) {
-        console.error('Error:', error);
-        alert('Failed to upload book. Please try again.');
+      console.error('Error:', error);
+      alert('Failed to upload book. Please try again.');
     } finally {
-        hideLoading();
+      hideLoading();
     }
-});
-
+  });
 document.getElementById('cancel-upload').addEventListener('click', () => {
     document.getElementById('upload-form-container').style.visibility = 'hidden';
     document.getElementById('upload-form-container').style.opacity = '0';

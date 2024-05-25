@@ -73,57 +73,105 @@ function createBookCard(id, title, author, image, language, category) {
   return bookCard;
 }
 
-// Function to fetch books from the server
-const CACHE_KEY = 'booksCache';
-const CACHE_EXPIRY_KEY = 'booksCacheExpiry';
-const CACHE_DURATION = 3600 * 1000; // 1 hour
+const DB_NAME = 'BooksDB';
+const DB_VERSION = 1;
+const STORE_NAME = 'books';
+const CACHE_EXPIRY_STORE_NAME = 'cacheExpiry';
+const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
-const fetchBooksFromServer = async () => {
+const openDatabase = () => {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+      }
+
+      if (!db.objectStoreNames.contains(CACHE_EXPIRY_STORE_NAME)) {
+        db.createObjectStore(CACHE_EXPIRY_STORE_NAME, { keyPath: 'key' });
+      }
+    };
+
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = (event) => reject(event.target.error);
+  });
+};
+
+const saveBooksToCache = async (books) => {
+  const db = await openDatabase();
+
+  const transaction = db.transaction([STORE_NAME, CACHE_EXPIRY_STORE_NAME], 'readwrite');
+  const bookStore = transaction.objectStore(STORE_NAME);
+  const expiryStore = transaction.objectStore(CACHE_EXPIRY_STORE_NAME);
+
+  // Clear existing data
+  bookStore.clear();
+  expiryStore.clear();
+
+  // Remove owner details and add books to store
+  books.forEach(book => {
+    const { owner, ...bookWithoutOwner } = book;
+    bookStore.add(bookWithoutOwner);
+  });
+
+  // Set cache expiry time
+  expiryStore.add({ key: 'expiry', value: Date.now() + CACHE_DURATION });
+
+  return transaction.complete;
+};
+
+const getBooksFromCache = async () => {
+  const db = await openDatabase();
+  const transaction = db.transaction([STORE_NAME, CACHE_EXPIRY_STORE_NAME], 'readonly');
+  const bookStore = transaction.objectStore(STORE_NAME);
+  const expiryStore = transaction.objectStore(CACHE_EXPIRY_STORE_NAME);
+
+  const expiry = await expiryStore.get('expiry');
+  if (expiry && Date.now() > expiry.value) {
+    // Cache has expired
+    await clearCache(db);
+    return null;
+  }
+
+  return new Promise((resolve, reject) => {
+    const request = bookStore.getAll();
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = (event) => reject(event.target.error);
+  });
+};
+
+const clearCache = (db) => {
+  const transaction = db.transaction([STORE_NAME, CACHE_EXPIRY_STORE_NAME], 'readwrite');
+  transaction.objectStore(STORE_NAME).clear();
+  transaction.objectStore(CACHE_EXPIRY_STORE_NAME).clear();
+  return transaction.complete;
+};
+
+const fetchBooksFromServerAndSave = async () => {
   try {
     const response = await fetch('/api/books');
     const books = await response.json();
+    await saveBooksToCache(books);
     return books;
   } catch (error) {
-    console.error('Error fetching books:', error);
+    console.error('Error fetching books from server:', error);
     return null;
   }
-};
-
-// Function to remove owner details from books
-const removeOwnerDetails = (books) => {
-  return books.map(({ owner, ...bookWithoutOwner }) => bookWithoutOwner);
-};
-
-// Function to save books to cache without owner details
-const saveBooksToCache = (books) => {
-  const booksWithoutOwner = removeOwnerDetails(books);
-  localStorage.setItem(CACHE_KEY, JSON.stringify(booksWithoutOwner));
-  localStorage.setItem(CACHE_EXPIRY_KEY, Date.now() + CACHE_DURATION);
-};
-
-const getBooksFromCache = () => {
-  const books = localStorage.getItem(CACHE_KEY);
-  const expiry = localStorage.getItem(CACHE_EXPIRY_KEY);
-
-  if (books && expiry && Date.now() < expiry) {
-    return JSON.parse(books);
-  }
-
-  return null;
 };
 
 const fetchAndDisplayBooks = async () => {
   showLoading('Loading Books...');
 
-  let books = getBooksFromCache();
-  if (books) {
+  let books = await getBooksFromCache();
+  if (books && books.length > 0) {
     displayBooksByCategory(books);
-    hideLoading();
   }
 
-  books = await fetchBooksFromServer();
+  books = await fetchBooksFromServerAndSave();
   if (books) {
-    saveBooksToCache(books);
     displayBooksByCategory(books);
   }
 

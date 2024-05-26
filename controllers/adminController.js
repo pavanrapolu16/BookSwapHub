@@ -1,5 +1,17 @@
 import admin from '../config/firebaseConfig.js';
+import nodemailer from 'nodemailer';
+import ipinfo from 'ipinfo';
+import UAParser from 'ua-parser-js';
 const db = admin.firestore();
+
+// Setup Nodemailer transporter
+const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: process.env.MAIL, // use environment variables for security
+        pass: process.env.PASS
+    }
+});
 
 // Show login form
 export function getLogin(req, res) {
@@ -7,8 +19,8 @@ export function getLogin(req, res) {
 }
 
 // Handle login
-export async function postLogin (req, res) {
-    const {email, password } = req.body;
+export async function postLogin(req, res) {
+    const { email, password } = req.body;
     try {
         // Fetch admin credentials from Firestore
         const adminDoc = await db.collection('Authentication').doc('adminCredentials').get();
@@ -25,7 +37,36 @@ export async function postLogin (req, res) {
         // Validate credentials
         if (email === adminUsername && password === adminPassword) {
             req.session.admin = true;
-            res.redirect('/admin/dashboard');
+
+            const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+            const userAgent = req.headers['user-agent'];
+            const parser = new UAParser();
+            const uaResult = parser.setUA(userAgent).getResult();
+            const deviceDetails = `${uaResult.browser.name} ${uaResult.browser.version} on ${uaResult.os.name} ${uaResult.os.version}, ${uaResult.device.model || 'Unknown device'}`;
+
+            ipinfo(ip, async (err, cLoc) => {
+                if (err) {
+                    console.error('Error fetching IP info:', err);
+                    cLoc = { city: 'Unknown', region: 'Unknown', country: 'Unknown' };
+                }
+
+                const loginTime = new Date().toLocaleString();
+                const mailOptions = {
+                    from: process.env.EMAIL_USER,
+                    to: 'pavanrapolu16@gmail.com', // replace with admin's email
+                    subject: 'Admin Login Alert',
+                    text: `An admin logged in at ${loginTime} from IP: ${ip}. Location: ${cLoc.city}, ${cLoc.region}, ${cLoc.country}. Device: ${deviceDetails}`
+                };
+
+                try {
+                    await transporter.sendMail(mailOptions);
+                    console.log('Login email sent successfully');
+                } catch (mailError) {
+                    console.error('Error sending login email:', mailError);
+                }
+
+                res.redirect('/admin/dashboard');
+            });
         } else {
             res.send('Login Failed');
         }
@@ -33,7 +74,7 @@ export async function postLogin (req, res) {
         console.error('Error getting document:', error);
         res.send('Login Failed');
     }
-};
+}
 
 // Show dashboard with books
 export async function getDashboard(req, res) {

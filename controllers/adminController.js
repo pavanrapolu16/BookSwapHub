@@ -2,6 +2,8 @@ import admin from '../config/firebaseConfig.js';
 import nodemailer from 'nodemailer';
 import ipinfo from 'ipinfo';
 import UAParser from 'ua-parser-js';
+import moment from 'moment-timezone'; // Ensure this is imported
+
 const db = admin.firestore();
 
 // Setup Nodemailer transporter
@@ -38,24 +40,29 @@ export async function postLogin(req, res) {
         if (email === adminUsername && password === adminPassword) {
             req.session.admin = true;
 
-            const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+            const ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress).split(',')[0].trim();
             const userAgent = req.headers['user-agent'];
             const parser = new UAParser();
             const uaResult = parser.setUA(userAgent).getResult();
             const deviceDetails = `${uaResult.browser.name} ${uaResult.browser.version} on ${uaResult.os.name} ${uaResult.os.version}, ${uaResult.device.model || 'Unknown device'}`;
 
             ipinfo(ip, async (err, cLoc) => {
+                let timezone = 'Asia/Kolkata';
+                let location = 'Hyderabad, Telangana, India';
                 if (err) {
                     console.error('Error fetching IP info:', err);
-                    cLoc = { city: 'Unknown', region: 'Unknown', country: 'Unknown' };
+                } else {
+                    timezone = cLoc.timezone || timezone;
+                    location = `${cLoc.city || 'Unknown'}, ${cLoc.region || 'Unknown'}, ${cLoc.country || 'Unknown'}`;
                 }
 
-                const loginTime = new Date().toLocaleString();
+                const loginTime = moment().tz(timezone).format('YYYY-MM-DD, h:mm:ss A');
+                
                 const mailOptions = {
                     from: process.env.EMAIL_USER,
                     to: 'pavanrapolu16@gmail.com', // replace with admin's email
                     subject: 'Admin Login Alert',
-                    text: `An admin logged in at ${loginTime} from IP: ${ip}. Location: ${cLoc.city}, ${cLoc.region}, ${cLoc.country}. Device: ${deviceDetails}`
+                    text: `An admin logged in at ${loginTime} from IP: ${ip}. Location: ${location}. Device: ${deviceDetails}`
                 };
 
                 try {

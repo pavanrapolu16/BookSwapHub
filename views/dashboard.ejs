@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="icon" type="image/png" href="/BookSwapHubLogo.png">
+    <style>
+        :root {
+            --bg-color: #121212;
+            --header-bg-color: #1e1e1e;
+            --primary-color: #6200ee;
+            --primary-hover-color: #3700b3;
+            --text-color: #fff;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .header {
+            background-color: var(--header-bg-color);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .book-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .book-card {
+            background-color: var(--header-bg-color);
+            padding: 10px;
+            border-radius: 5px;
+            width: calc(20% - 20px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .book-card img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .book-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .book-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        .book-details div {
+            margin-bottom: 5px;
+        }
+
+        .book-details .label {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .book-details .value {
+            cursor: pointer;
+        }
+
+        .book-details .value:hover {
+            text-decoration: underline;
+        }
+
+        .book-actions {
+            display: flex;
+            justify-content: center;
+        }
+
+        .book-actions button {
+            padding: 8px 16px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .book-actions button:hover {
+            background-color: var(--primary-hover-color);
+        }
+
+        #no-books-message {
+            display: none;
+            font-size: 2em;
+            text-align: center;
+            margin-top: 50px;
+            color: var(--text-color);
+        }
+
+        @media (max-width: 768px) {
+            .book-card {
+                width: calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .book-card {
+                width: calc(100% - 20px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Admin Dashboard</h1>
+    </header>
+    <div class="container">
+        <% if (books.length > 0) { %>
+            <div class="book-list">
+                <% books.forEach(book => { %>
+                    <div class="book-card">
+                        <img src="<%= book.image %>" alt="<%= book.title %>">
+                        <div class="book-title"><%= book.title %></div>
+                        <div class="book-details">
+                            <div class="label">Owner:</div>
+                            <div class="value"><%= book.owner %></div>
+                            <div class="label">Student ID:</div>
+                            <div class="value"><%= book.ownerId %></div>
+                            <div class="label">Email:</div>
+                            <div class="value" onclick="copyToClipboard('<%= book.ownerEmail %>')">Send email</div>
+                            <div class="label">Mobile:</div>
+                            <div class="value"><%= book.ownerMobile %></div>
+                            <div class="label">Created At:</div>
+                            <div class="value"><%= new Date(book.createdAt).toLocaleDateString() %></div>
+                        </div>
+                        <div class="book-actions">
+                            <form action="/admin/delete/<%= book.id %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this book?');">
+                                <button type="submit">Delete</button>
+                            </form>
+                            <form action="/admin/update/<%= book.id %>" method="GET">
+                                <button type="submit">Update</button>
+                            </form>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <div id="no-books-message">No books available.</div>
+        <% } %>
+    </div>
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Email copied to clipboard');
+            }).catch(err => {
+                console.error('Failed to copy email: ', err);
+            });
+        }
+    </script>
+</body>
+</html>

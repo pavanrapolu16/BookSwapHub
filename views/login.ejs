@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="icon" type="image/png" href="/BookSwapHubLogo.png">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Dark background color */
+            color: #fff; /* White text color */
+        }
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-container {
+            width: 400px; /* Increased width of login container */
+            background-color: #1e1e1e; /* Darker background color */
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            box-sizing: border-box;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        h2 {
+            margin-top: 0;
+            text-align: center;
+            color: #fff; /* White text color */
+        }
+        .form-group {
+            margin-bottom: 20px;
+            position: relative; /* Positioning for eye icon */
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #ccc; /* Light text color */
+        }
+        .form-group input {
+            width: calc(100% - 32px); /* Adjusted width for input field */
+            padding: 10px;
+            border: 1px solid #333; /* Dark border color */
+            border-radius: 5px;
+            box-sizing: border-box;
+            background-color: #333; /* Dark input background color */
+            color: #fff; /* White text color */
+        }
+        .show-password {
+            position: absolute;
+            right: 45px;
+            top: 70%;
+            transform: translateY(-50%);
+            color: #333; /* Dark icon color */
+            cursor: pointer;
+        }
+        
+        .form-actions {
+            text-align: center;
+        }
+        .form-actions button {
+            padding: 10px 30px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff; /* Blue button color */
+            color: #fff; /* White text color */
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .form-actions button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-container">
+            <h2>Login</h2>
+            <form action="/admin" method="POST">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" autocomplete="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" autocomplete="current-password" required>
+                    <span class="show-password">&#128065;</span> <!-- Eye icon for Show Password -->
+                </div>
+                <div class="form-actions">
+                    <button type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const passwordInput = document.getElementById('password');
+        const showPasswordButton = document.querySelector('.show-password');
+
+        showPasswordButton.addEventListener('click', () => {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                showPasswordButton.innerHTML = '&#128064;'; // Change to crossed-eye icon for Hide Password
+            } else {
+                passwordInput.type = 'password';
+                showPasswordButton.innerHTML = '&#128065;'; // Change back to eye icon for Show Password
+            }
+        });
+    </script>
+</body>
+</html>

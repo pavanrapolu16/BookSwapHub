@@ -175,6 +175,7 @@ const fetchAndDisplayBooks = async () => {
 
   let books = await getBooksFromCache();
   if (books && books.length > 0) {
+    hideLoading()
     displayBooksByCategory(books);
   }
 

@@ -1,9 +1,4 @@
 import admin from '../config/firebaseConfig.js';
-
-const adminUsername = 'pavanrapolu16@gmail.com';
-const adminPassword = 'BookSwapHub@2020';
-
-
 const db = admin.firestore();
 
 // Show login form
@@ -12,21 +7,36 @@ export function getLogin(req, res) {
 }
 
 // Handle login
-export function postLogin (req, res) {
-    console
+export async function postLogin (req, res) {
     const {email, password } = req.body;
-    console.log(email,password)
-    if (email === adminUsername && password === adminPassword) {
-        req.session.admin = true;
-        res.redirect('/admin/dashboard');
-    } else {
+    try {
+        // Fetch admin credentials from Firestore
+        const adminDoc = await db.collection('Authentication').doc('adminCredentials').get();
+        if (!adminDoc.exists) {
+            console.log('No such document!');
+            res.send('Login Failed');
+            return;
+        }
+
+        const adminData = adminDoc.data();
+        const adminUsername = adminData.username;
+        const adminPassword = adminData.password;
+
+        // Validate credentials
+        if (email === adminUsername && password === adminPassword) {
+            req.session.admin = true;
+            res.redirect('/admin/dashboard');
+        } else {
+            res.send('Login Failed');
+        }
+    } catch (error) {
+        console.error('Error getting document:', error);
         res.send('Login Failed');
     }
 };
 
 // Show dashboard with books
 export async function getDashboard(req, res) {
-    console.log("at dashboard")
     if (!req.session.admin) {
         return res.redirect('/admin');
     }

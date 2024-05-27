@@ -6,6 +6,9 @@ const router = express.Router();
 // Login routes
 router.get('/login', getLogin);
 router.post('/login', postLogin);
+router.get("/",(res)=>{
+    res.redirect('/admin/login');
+})
 
 // Logout route
 router.get('/logout', logout);

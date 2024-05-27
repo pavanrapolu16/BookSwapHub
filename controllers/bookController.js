@@ -66,7 +66,8 @@ export const viewMorePage = async (req, res) => {
       // Remove the owner property
       const { owner, ...bookDataWithoutOwner } = bookData;
 
-      res.render('viewMoreBookDetails', { book: bookDataWithoutOwner });
+      //res.render('viewMoreBookDetails', { book: bookDataWithoutOwner });
+      res.render('viewMoreBookDetails' , { book: bookData });
   } catch (error) {
       console.error('Error fetching book details:', error);
       res.status(500).send('Failed to fetch book details');

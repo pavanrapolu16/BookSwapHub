@@ -13,7 +13,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
   <!-- Cropper.js CSS -->
   <link  href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
-
+  <!-- for image of chatBot -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 </head>
 <body>
@@ -40,6 +41,21 @@
     <p id="footer-year">&copy; <span id="current-year"></span> BookSwapHub</p>
     <p>Total Books: <span id="total-books-count">0</span></p>
   </footer>
+  <div class="contact-icon" onclick="toggleContact()">
+    <i class="fas fa-comment-dots"></i>
+  </div>
+  <a href="https://wa.me/916305662679?text=From%20BookSwapHub" class="whatsapp-icon" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  <div id="contact-modal" class="contact-modal">
+      <div class="contact-modal-content">
+          <span class="close" onclick="toggleContact()">&times;</span>
+          <p>If you find any bugs or have difficulty viewing the site, please contact us:</p>
+          <p>Email: <a href="mailto:pavanrapolu16@gmail.com">BookSwapHub.rgukt@gmail.com</a></p>
+          <p>Whatsapp : <a href="https://wa.me/916305772679?text=From%20BookSwapHub">chat with us</a></p>
+          <p>Phone: <a href="tel:+91 6305772679">6305772679</a></p>
+      </div>
+  </div>
 
   <!-- Upload Book Form Container -->
   <div id="upload-form-container">

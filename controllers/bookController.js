@@ -63,7 +63,10 @@ export const viewMorePage = async (req, res) => {
           return res.status(404).send('Book not found');
       }
       const bookData = bookDoc.data();
-      res.render('viewMoreBookDetails', { book: bookData });
+      // Remove the owner property
+      const { owner, ...bookDataWithoutOwner } = bookData;
+
+      res.render('viewMoreBookDetails', { book: bookDataWithoutOwner });
   } catch (error) {
       console.error('Error fetching book details:', error);
       res.status(500).send('Failed to fetch book details');

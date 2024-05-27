@@ -173,3 +173,52 @@ export async function postUpdateBook(req, res) {
 
 
 
+
+// Get categories and render categories management page
+export async function getCategories(req, res) {
+    if (!req.session.admin) {
+        return res.redirect('/admin');
+    }
+    try {
+        const categoriesSnapshot = await db.collection('categories').orderBy('name').get();
+        const categories = categoriesSnapshot.docs.map(doc => ({
+            id: doc.id,
+            name: doc.data().name
+        }));
+        res.render('categories', { categories });
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
+// Add a new category
+export async function addCategory(req, res) {
+    if (!req.session.admin) {
+        return res.redirect('/admin');
+    }
+    const { name } = req.body;
+    try {
+        const newCategoryRef = db.collection('categories').doc();
+        await newCategoryRef.set({ name });
+        res.redirect('/admin/categories');
+    } catch (error) {
+        console.error('Error adding category:', error);
+        res.status(500).send('Failed to add category');
+    }
+}
+
+// Delete a category
+export async function deleteCategory(req, res) {
+    if (!req.session.admin) {
+        return res.redirect('/admin');
+    }
+    const categoryId = req.params.id;
+    try {
+        await db.collection('categories').doc(categoryId).delete();
+        res.redirect('/admin/categories');
+    } catch (error) {
+        console.error('Error deleting category:', error);
+        res.status(500).send('Failed to delete category');
+    }
+}

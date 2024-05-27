@@ -72,7 +72,7 @@ export const viewMorePage = async (req, res) => {
 
 export const getCategoriesOptions = async (req, res) => {
   try {
-    const categoriesSnapshot = await db.collection('categories').get();
+    const categoriesSnapshot = await db.collection('categories').orderBy('name').get();
     const categories = categoriesSnapshot.docs.map(doc => ({
       id: doc.id,
       name: doc.data().name

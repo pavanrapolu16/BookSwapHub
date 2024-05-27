@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Categories</title>
+    <link rel="icon" type="image/png" href="/BookSwapHubLogo.png">
+    <style>
+        /* Similar to your dashboard styles */
+        :root {
+            --bg-color: #121212;
+            --header-bg-color: #1e1e1e;
+            --primary-color: #6200ee;
+            --primary-hover-color: #3700b3;
+            --text-color: #fff;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .header {
+            background-color: var(--header-bg-color);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .category-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .category-item {
+            background-color: var(--header-bg-color);
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-item form {
+            display: inline;
+        }
+
+        .category-item button {
+            padding: 8px 16px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .category-item button:hover {
+            background-color: var(--primary-hover-color);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Manage Categories</h1>
+    </header>
+    <div class="container">
+        <form action="/admin/categories/add" method="POST">
+            <input type="text" name="name" placeholder="New category name" required>
+            <button type="submit">Add Category</button>
+        </form>
+        <ul class="category-list">
+            <% categories.forEach(category => { %>
+                <li class="category-item">
+                    <span><%= category.name %></span>
+                    <form action="/admin/categories/delete/<%= category.id %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');">
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+</body>
+</html>

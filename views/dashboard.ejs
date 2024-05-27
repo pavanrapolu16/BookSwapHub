@@ -9,9 +9,11 @@
         :root {
             --bg-color: #121212;
             --header-bg-color: #1e1e1e;
+            --navbar-bg-color: #2e2e2e;
             --primary-color: #6200ee;
             --primary-hover-color: #3700b3;
             --text-color: #fff;
+            --active-color: #bb86fc;
         }
 
         body {
@@ -21,15 +23,34 @@
             color: var(--text-color);
         }
 
-        .header {
-            background-color: var(--header-bg-color);
-            padding: 20px;
-            text-align: center;
+        .navbar {
+            background-color: var(--navbar-bg-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
         }
 
-        .header h1 {
-            margin: 0;
-            font-size: 2rem;
+        .navbar .current-page {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--active-color);
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .navbar a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 10px 15px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: var(--primary-hover-color);
         }
 
         .container {
@@ -136,12 +157,15 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <h1>Admin Dashboard</h1>
-        <nav>
+    <nav class="navbar">
+        <div class="current-page">Admin Dashboard</div>
+        <div class="nav-links">
+            <a href="/admin/dashboard">Dashboard</a>
             <a href="/admin/categories">Manage Categories</a>
-        </nav>
-    </header>
+            <a href="/admin/add-book">Add Book</a>
+            <a href="/admin/logout">Logout</a>
+        </div>
+    </nav>
     <div class="container">
         <% if (books.length > 0) { %>
             <div class="book-list">
@@ -151,13 +175,13 @@
                         <div class="book-title"><%= book.title %></div>
                         <div class="book-details">
                             <div class="label">Owner:</div>
-                            <div class="value"><%= book.owner %></div>
+                            <div class="value"><%= book.owner.name %></div>
                             <div class="label">Student ID:</div>
-                            <div class="value"><%= book.ownerId %></div>
+                            <div class="value"><%= book.owner.ID %></div>
                             <div class="label">Email:</div>
-                            <div class="value" onclick="copyToClipboard('<%= book.ownerEmail %>')">Send email</div>
+                            <div class="value" onclick="copyToClipboard('<%= book.owner.email %>')">Send email</div>
                             <div class="label">Mobile:</div>
-                            <div class="value"><%= book.ownerMobile %></div>
+                            <div class="value"><%= book.owner.mobile %></div>
                             <div class="label">Created At:</div>
                             <div class="value"><%= new Date(book.createdAt).toLocaleDateString() %></div>
                         </div>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Book</title>
+    <link rel="icon" type="image/png" href="/BookSwapHubLogo.png">
+    <style>
+        :root {
+            --bg-color: #121212;
+            --header-bg-color: #1e1e1e;
+            --navbar-bg-color: #2e2e2e;
+            --primary-color: #6200ee;
+            --primary-hover-color: #3700b3;
+            --text-color: #fff;
+            --active-color: #bb86fc;
+            --input-bg-color: #2e2e2e;
+            --input-border-color: #6200ee;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .header {
+            background-color: var(--header-bg-color);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .navbar {
+            background-color: var(--navbar-bg-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .navbar .current-page {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--active-color);
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .navbar a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 10px 15px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: var(--primary-hover-color);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input, select, textarea {
+            padding: 10px;
+            border: 2px solid var(--input-border-color);
+            border-radius: 5px;
+            background-color: var(--input-bg-color);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        input[type="file"] {
+            padding: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover-color);
+        }
+
+        label {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/categories">Manage Categories</a>
+        <a href="/admin/add-book">Add Book</a>
+        <a href="/admin/logout">Logout</a>
+    </nav>
+    <div class="container">
+        <form action="/admin/add-book" method="POST">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" required>
+
+            <label for="author">Author</label>
+            <input type="text" id="author" name="author" required>
+
+            <label for="category">Category</label>
+            <input type="text" id="category" name="category" required>
+
+            <label for="language">language</label>
+            <input type="text" id="language" name="language" required>
+
+            <label for="description">Description</label>
+            <textarea id="description" name="description" required></textarea>
+
+            <label for="imageUrl">Image URL</label>
+            <input type="url" id="imageUrl" name="imageUrl" required>
+
+            <button type="submit">Add Book</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -6,13 +6,16 @@
     <title>Manage Categories</title>
     <link rel="icon" type="image/png" href="/BookSwapHubLogo.png">
     <style>
-        /* Similar to your dashboard styles */
         :root {
             --bg-color: #121212;
-            --header-bg-color: #1e1e1e;
+            --navbar-bg-color: #1e1e1e;
             --primary-color: #6200ee;
             --primary-hover-color: #3700b3;
             --text-color: #fff;
+            --input-bg-color: #2c2c2c;
+            --input-border-color: #444;
+            --header-bg-color: #1e1e1e;
+            --active-color: #bb86fc;
         }
 
         body {
@@ -22,15 +25,34 @@
             color: var(--text-color);
         }
 
-        .header {
-            background-color: var(--header-bg-color);
-            padding: 20px;
-            text-align: center;
+        .navbar {
+            background-color: var(--navbar-bg-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
         }
 
-        .header h1 {
-            margin: 0;
-            font-size: 2rem;
+        .navbar .current-page {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--active-color);
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .navbar a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 10px 15px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: var(--primary-hover-color);
         }
 
         .container {
@@ -72,16 +94,52 @@
         .category-item button:hover {
             background-color: var(--primary-hover-color);
         }
+
+        .add-category-form {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .add-category-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--input-border-color);
+            border-radius: 5px;
+            background-color: var(--input-bg-color);
+            color: var(--text-color);
+            margin-right: 10px;
+        }
+
+        .add-category-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .add-category-button:hover {
+            background-color: var(--primary-hover-color);
+        }
     </style>
 </head>
 <body>
-    <header class="header">
-        <h1>Manage Categories</h1>
-    </header>
+    <nav class="navbar">
+        <div class="current-page">Manage Categories</div>
+        <div class="nav-links">
+            <a href="/admin/dashboard">Dashboard</a>
+            <a href="/admin/categories">Manage Categories</a>
+            <a href="/admin/add-book">Add Book</a>
+            <a href="/admin/logout">Logout</a>
+        </div>
+    </nav>
     <div class="container">
-        <form action="/admin/categories/add" method="POST">
-            <input type="text" name="name" placeholder="New category name" required>
-            <button type="submit">Add Category</button>
+        <form class="add-category-form" action="/admin/categories/add" method="POST">
+            <input type="text" class="add-category-input" name="name" placeholder="New category name" required>
+            <button type="submit" class="add-category-button">Add Category</button>
         </form>
         <ul class="category-list">
             <% categories.forEach(category => { %>

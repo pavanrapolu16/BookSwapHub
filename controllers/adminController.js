@@ -10,7 +10,7 @@ const db = admin.firestore();
 const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        user: process.env.MAIL, // use environment variables for security
+        user: process.env.MAIL,
         pass: process.env.PASS
     }
 });
@@ -24,7 +24,6 @@ export function getLogin(req, res) {
 export async function postLogin(req, res) {
     const { email, password } = req.body;
     try {
-        // Fetch admin credentials from Firestore
         const adminDoc = await db.collection('Authentication').doc('adminCredentials').get();
         if (!adminDoc.exists) {
             console.log('No such document!');
@@ -36,7 +35,6 @@ export async function postLogin(req, res) {
         const adminUsername = adminData.username;
         const adminPassword = adminData.password;
 
-        // Validate credentials
         if (email === adminUsername && password === adminPassword) {
             req.session.admin = true;
 
@@ -65,7 +63,7 @@ export async function postLogin(req, res) {
                 
                 const mailOptions = {
                     from: process.env.MAIL,
-                    to: 'pavanrapolu16@gmail.com', // recipient email
+                    to: 'pavanrapolu16@gmail.com',
                     subject: 'Admin Login Alert',
                     text: `An admin logged in at ${loginTime} from IP: ${ip}. Location: ${location}. Device: ${deviceDetails}`
                 };
@@ -87,35 +85,29 @@ export async function postLogin(req, res) {
         res.send('Login Failed');
     }
 }
+
 // Show dashboard with books
 export async function getDashboard(req, res) {
     if (!req.session.admin) {
-        return res.redirect('/admin');
+        return res.redirect('/admin/login');
     }
-    const booksSnapshot = await db.collection('books').get();
-    const books = [];
-    booksSnapshot.forEach(doc => {
-        const data = doc.data();
-        books.push({
+    try {
+        const booksSnapshot = await db.collection('books').orderBy('title').get();
+        const books = booksSnapshot.docs.map(doc => ({
             id: doc.id,
-            title: data.title,
-            owner: data.owner.name,
-            ownerId: data.owner.ID,
-            ownerEmail: data.owner.email,
-            ownerMobile: data.owner.mobile,
-            image: data.image,
-            createdAt: data.createdAt
-        });
-    });
-    res.render('dashboard', { books });
+            ...doc.data()
+        }));
+        res.render('dashboard', { books });
+    } catch (error) {
+        console.error('Error fetching books:', error);
+        res.status(500).send('Internal Server Error');
+    }
 }
-
-
 
 // Handle delete book
 export async function deleteBook(req, res) {
     if (!req.session.admin) {
-        return res.redirect('/admin');
+        return res.redirect('/admin/login');
     }
     const bookId = req.params.id;
     await db.collection('books').doc(bookId).delete();
@@ -125,7 +117,7 @@ export async function deleteBook(req, res) {
 // Show update book form
 export async function getUpdateBook(req, res) {
     if (!req.session.admin) {
-        return res.redirect('/admin');
+        return res.redirect('/admin/login');
     }
     const bookId = req.params.id;
     const bookDoc = await db.collection('books').doc(bookId).get();
@@ -138,16 +130,14 @@ export async function getUpdateBook(req, res) {
 // Handle update book
 export async function postUpdateBook(req, res) {
     if (!req.session.admin) {
-        return res.redirect('/admin');
+        return res.redirect('/admin/login');
     }
 
     const bookId = req.params.id;
     console.log(req.body);
     const { title, author, description, image, language, category, createdAt ,name, mobile,email,ID, userClass} = req.body;
 
-
     try {
-        // Update Firestore document with all fields
         await db.collection('books').doc(bookId).update({ 
             title,
             author,
@@ -171,13 +161,53 @@ export async function postUpdateBook(req, res) {
     }
 }
 
+// Show add book form
+export function getAddBook(req, res) {
+    if (!req.session.admin) {
+        return res.redirect('/admin/login');
+    }
+    res.render('addBook');
+}
 
+// Handle add book
+export const addBook = async (req, res) => {
+    if (!req.session.admin) {
+        return res.redirect('/admin/login');
+    }
+    const bookId = `book_${Date.now()}`; // Generate unique ID using timestamp
+    const { title, author, category, description, imageUrl ,language} = req.body;
 
+    const newBook={
+        id: bookId,
+        title,
+        author,
+        category,
+        language,
+        description,
+        image: imageUrl,
+        owner: {
+            name:"Admin",
+            mobile:"6305772679",
+            email:"pavanrapolu16@gmail.com",
+            ID:"NULL",
+            class: "NULL"
+        },
+        createdAt: new Date().toISOString()
+    };
+
+    try {
+        await db.collection('books').doc(bookId).set(newBook);
+        res.redirect('/admin/dashboard');
+    } catch (error) {
+        console.error('Error adding book:', error);
+        res.status(500).json({ message: 'Failed to add book', error });
+    }
+}
 
 // Get categories and render categories management page
 export async function getCategories(req, res) {
     if (!req.session.admin) {
-        return res.redirect('/admin');
+        return res.redirect('/admin/login');
     }
     try {
         const categoriesSnapshot = await db.collection('categories').orderBy('name').get();
@@ -192,33 +222,48 @@ export async function getCategories(req, res) {
     }
 }
 
-// Add a new category
+// Handle add category
 export async function addCategory(req, res) {
     if (!req.session.admin) {
-        return res.redirect('/admin');
+        return res.redirect('/admin/login');
     }
+
     const { name } = req.body;
     try {
-        const newCategoryRef = db.collection('categories').doc();
-        await newCategoryRef.set({ name });
+        const categoryDoc = db.collection('categories').doc();
+        await categoryDoc.set({ name });
         res.redirect('/admin/categories');
     } catch (error) {
         console.error('Error adding category:', error);
-        res.status(500).send('Failed to add category');
+        res.status(500).send('Internal Server Error');
     }
 }
 
-// Delete a category
+// Handle delete category
 export async function deleteCategory(req, res) {
     if (!req.session.admin) {
-        return res.redirect('/admin');
+        return res.redirect('/admin/login');
     }
+
     const categoryId = req.params.id;
     try {
         await db.collection('categories').doc(categoryId).delete();
         res.redirect('/admin/categories');
     } catch (error) {
         console.error('Error deleting category:', error);
-        res.status(500).send('Failed to delete category');
+        res.status(500).send('Internal Server Error');
     }
+}
+
+
+// Handle logout
+export function logout(req, res) {
+    req.session.destroy(err => {
+        if (err) {
+            console.error('Error destroying session:', err);
+            res.status(500).send('Internal Server Error');
+        } else {
+            res.redirect('/admin/login');
+        }
+    });
 }

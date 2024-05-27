@@ -78,7 +78,6 @@ export const getCategoriesOptions = async (req, res) => {
       name: doc.data().name
     }));
     res.status(200).json(categories);
-    console.log(categories);
   } catch (error) {
     console.error('Error fetching categories:', error);
     res.status(500).json({ message: 'Internal Server Error', error });

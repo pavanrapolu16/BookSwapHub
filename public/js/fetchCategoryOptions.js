@@ -4,7 +4,6 @@ function fetchCategories() {
 fetch('/api/books/getCategoriesOptions')
     .then(response => response.json())
     .then(data => {
-        console.log(data)
         data.forEach(category => {
             const option = document.createElement('option');
             option.value = category.name;

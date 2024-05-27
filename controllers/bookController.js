@@ -69,3 +69,18 @@ export const viewMorePage = async (req, res) => {
       res.status(500).send('Failed to fetch book details');
   }
 };
+
+export const getCategoriesOptions = async (req, res) => {
+  try {
+    const categoriesSnapshot = await db.collection('categories').get();
+    const categories = categoriesSnapshot.docs.map(doc => ({
+      id: doc.id,
+      name: doc.data().name
+    }));
+    res.status(200).json(categories);
+    console.log(categories);
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    res.status(500).json({ message: 'Internal Server Error', error });
+  }
+};

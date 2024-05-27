@@ -122,16 +122,16 @@ document.getElementById('upload-form').addEventListener('submit', async function
     }
 
     alert('Book added successfully');
-    const books = (await getBooksFromCache()) || [];    
-    const excludedKeys = ['name', 'mobile', 'email', 'ID', 'class'];
-    const bookInfo = {};
-    for (const key in bookData) {
-      if (!excludedKeys.includes(key)) {
-        bookInfo[key] = bookData[key];
-      }
-    }
-    books.push(bookInfo);
-    await saveBooksToCache(books);
+    // const books = (await getBooksFromCache()) || [];    
+    // const excludedKeys = ['name', 'mobile', 'email', 'ID', 'class'];
+    // const bookInfo = {};
+    // for (const key in bookData) {
+    //   if (!excludedKeys.includes(key)) {
+    //     bookInfo[key] = bookData[key];
+    //   }
+    // }
+    // books.push(bookInfo);
+    // await saveBooksToCache(books);
     window.location.reload();
   } catch (error) {
     console.error('Error:', error);

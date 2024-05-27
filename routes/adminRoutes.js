@@ -6,7 +6,7 @@ const router = express.Router();
 // Login routes
 router.get('/login', getLogin);
 router.post('/login', postLogin);
-router.get("/",(res)=>{
+router.get("/",(req,res)=>{
     res.redirect('/admin/login');
 })
 

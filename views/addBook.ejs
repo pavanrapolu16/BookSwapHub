@@ -113,10 +113,13 @@
 </head>
 <body>
     <nav class="navbar">
-        <a href="/admin/dashboard">Dashboard</a>
-        <a href="/admin/categories">Manage Categories</a>
-        <a href="/admin/add-book">Add Book</a>
-        <a href="/admin/logout">Logout</a>
+        <div class="current-page">Add Book</div>
+        <div class="nav-links">
+            <a href="/admin/dashboard">Dashboard</a>
+            <a href="/admin/categories">Manage Categories</a>
+            <a href="/admin/add-book">Add Book</a>
+            <a href="/admin/logout">Logout</a>
+        </div>
     </nav>
     <div class="container">
         <form action="/admin/add-book" method="POST">

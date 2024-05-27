@@ -134,7 +134,6 @@ export async function postUpdateBook(req, res) {
     }
 
     const bookId = req.params.id;
-    console.log(req.body);
     const { title, author, description, image, language, category, createdAt ,name, mobile,email,ID, userClass} = req.body;
 
     try {

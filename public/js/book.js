@@ -178,13 +178,13 @@ const fetchAndDisplayBooks = async () => {
     hideLoading()
     displayBooksByCategory(books);
   }
-
+  
   books = await fetchBooksFromServerAndSave();
   if (books) {
+    hideLoading();
     displayBooksByCategory(books);
   }
 
-  hideLoading();
 };
 
 window.onload = fetchAndDisplayBooks;

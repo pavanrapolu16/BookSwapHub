@@ -1,15 +1,13 @@
-
-
 function updateTotalBooksCount(count) {
   const totalBooksCountElement = document.getElementById('total-books-count');
   totalBooksCountElement.textContent = count;
 }
 
 const showLoading = (message) => {
-    document.getElementById('loading').style.display = 'flex';
-    document.getElementById('loading-overlay').style.display = 'flex';
-    document.getElementById('loading-message').textContent = message;
-  };
+  document.getElementById('loading').style.display = 'flex';
+  document.getElementById('loading-overlay').style.display = 'flex';
+  document.getElementById('loading-message').textContent = message;
+};
 
   const hideLoading = () => {
     document.getElementById('loading-overlay').style.display = 'none';
@@ -70,6 +68,7 @@ function createBookCard(id, title, author, image, language, category) {
     showLoading("Loading Book details");
     // Navigate to the new page
     window.location.href = `/api/books/viewMore/${bookId}`;
+    hideLoading();
   });
   newBox.appendChild(viewMorebutton);
 
@@ -144,6 +143,7 @@ const getBooksFromCache = async () => {
   }
 
   return new Promise((resolve, reject) => {
+    hideLoading();
     const request = bookStore.getAll();
     request.onsuccess = () => resolve(request.result);
     request.onerror = (event) => reject(event.target.error);
@@ -163,9 +163,11 @@ const fetchBooksFromServerAndSave = async () => {
     const books = await response.json();
     updateTotalBooksCount(books.length);
     await saveBooksToCache(books);
+    hideLoading()
     return books;
   } catch (error) {
     console.error('Error fetching books from server:', error);
+    hideLoading()
     return null;
   }
 };

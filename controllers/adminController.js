@@ -291,15 +291,10 @@ export async function getAnalytics(req, res) {
             return acc;
         }, {});
 
-        const owners = Object.keys(booksPerOwner);
-        const booksCount = owners.map(owner => booksPerOwner[owner].length);
-
         res.render('analytics', {
             totalBooks,
             totalAuthors,
             totalCategories,
-            owners,
-            booksCount,
             booksPerOwner
         });
     } catch (error) {

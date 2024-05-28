@@ -85,12 +85,6 @@
             color: var(--primary-color);
         }
 
-        .chart-container {
-            background-color: var(--header-bg-color);
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 30px;
-        }
 
         .owner-books {
             background-color: var(--header-bg-color);
@@ -146,9 +140,6 @@
                 <p>Total Categories</p>
             </div>
         </div>
-        <div class="chart-container">
-            <canvas id="booksPerOwnerChart"></canvas>
-        </div>
         <div class="owner-books">
             <h3>Books per Owner</h3>
             <% for (let owner in booksPerOwner) { %>
@@ -161,44 +152,5 @@
             <% } %>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const booksPerOwnerChartCanvas = document.getElementById('booksPerOwnerChart').getContext('2d');
-
-            const booksPerOwnerLabels = "<%= JSON.stringify(owners) %>";
-            const booksPerOwnerData = "<%= JSON.stringify(booksCount) %>";
-
-            const booksPerOwnerChartData = {
-                labels: booksPerOwnerLabels,
-                datasets: [{
-                    label: 'Books per Owner',
-                    data: booksPerOwnerData,
-                    backgroundColor: 'rgba(98, 0, 238, 0.5)',
-                    borderColor: 'rgba(98, 0, 238, 1)',
-                    borderWidth: 1
-                }]
-            };
-
-            new Chart(booksPerOwnerChartCanvas, {
-                type: 'bar',
-                data: booksPerOwnerChartData,
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            labels: {
-                                color: 'white'
-                            }
-                        }
-                    }
-                }
-            });
-        });
-    </script>
 </body>
 </html>

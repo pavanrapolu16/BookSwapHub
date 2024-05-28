@@ -295,7 +295,8 @@ export async function getAnalytics(req, res) {
             totalBooks,
             totalAuthors,
             totalCategories,
-            booksPerOwner
+            booksPerOwner,
+            books
         });
     } catch (error) {
         console.error('Error fetching analytics data:', error);

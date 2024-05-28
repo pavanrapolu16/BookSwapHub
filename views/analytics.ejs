@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Analytics</title>
+    <link rel="icon" type="image/png" href="/BookSwapHubLogo.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --header-bg-color: #1e1e1e;
+            --navbar-bg-color: #2e2e2e;
+            --primary-color: #6200ee;
+            --primary-hover-color: #3700b3;
+            --text-color: #fff;
+            --active-color: #bb86fc;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .navbar {
+            background-color: var(--navbar-bg-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .navbar .current-page {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--active-color);
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .navbar a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 10px 15px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: var(--primary-hover-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .summary-cards {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background-color: var(--header-bg-color);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            width: 30%;
+        }
+
+        .summary-card h2 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        .summary-card p {
+            margin: 10px 0 0;
+            font-size: 1.2em;
+            color: var(--primary-color);
+        }
+
+        .chart-container {
+            background-color: var(--header-bg-color);
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+
+        .owner-books {
+            background-color: var(--header-bg-color);
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .owner-books h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .owner-books ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .owner-books ul li {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .owner-books ul li span {
+            font-weight: bold;
+            color: var(--active-color);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="current-page">Admin Analytics</div>
+        <div class="nav-links">
+            <a href="/admin/dashboard">Dashboard</a>
+            <a href="/admin/categories">Manage Categories</a>
+            <a href="/admin/add-book">Add Book</a>
+            <a href="/admin/logout">Logout</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Analytics</h1>
+        <div class="summary-cards">
+            <div class="summary-card">
+                <h2><%= totalBooks %></h2>
+                <p>Total Books</p>
+            </div>
+            <div class="summary-card">
+                <h2><%= totalAuthors %></h2>
+                <p>Total Authors</p>
+            </div>
+            <div class="summary-card">
+                <h2><%= totalCategories %></h2>
+                <p>Total Categories</p>
+            </div>
+        </div>
+        <div class="chart-container">
+            <canvas id="booksPerOwnerChart"></canvas>
+        </div>
+        <div class="owner-books">
+            <h3>Books per Owner</h3>
+            <% for (let owner in booksPerOwner) { %>
+                <h4><%= owner %>:</h4>
+                <ul>
+                    <% booksPerOwner[owner].forEach(book => { %>
+                        <li><span>Title:</span> <%= book.title %> | <span>Category:</span> <%= book.category %></li>
+                    <% }); %>
+                </ul>
+            <% } %>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const booksPerOwnerChartCanvas = document.getElementById('booksPerOwnerChart').getContext('2d');
+
+            const booksPerOwnerLabels = "<%= JSON.stringify(owners) %>";
+            const booksPerOwnerData = "<%= JSON.stringify(booksCount) %>";
+
+            const booksPerOwnerChartData = {
+                labels: booksPerOwnerLabels,
+                datasets: [{
+                    label: 'Books per Owner',
+                    data: booksPerOwnerData,
+                    backgroundColor: 'rgba(98, 0, 238, 0.5)',
+                    borderColor: 'rgba(98, 0, 238, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            new Chart(booksPerOwnerChartCanvas, {
+                type: 'bar',
+                data: booksPerOwnerChartData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: 'white'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

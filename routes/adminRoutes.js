@@ -1,5 +1,5 @@
 import express from 'express';
-import { getLogin, postLogin,logout,getDashboard, deleteBook, getUpdateBook, postUpdateBook, getAddBook, addBook, getCategories, addCategory, deleteCategory } from '../controllers/adminController.js';
+import { getLogin, postLogin,logout,getDashboard, deleteBook, getUpdateBook, postUpdateBook, getAddBook, addBook, getCategories, addCategory, deleteCategory,getAnalytics } from '../controllers/adminController.js';
 
 const router = express.Router();
 
@@ -29,5 +29,8 @@ router.post('/add-book', addBook);
 router.get('/categories', getCategories);
 router.post('/categories', addCategory);
 router.post('/categories/delete/:id', deleteCategory);
+
+//analytics
+router.get('/analytics', getAnalytics);
 
 export default router;

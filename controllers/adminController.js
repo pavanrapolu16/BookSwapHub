@@ -266,3 +266,44 @@ export function logout(req, res) {
         }
     });
 }
+
+// Show analytics page
+export async function getAnalytics(req, res) {
+    if (!req.session.admin) {
+        return res.redirect('/admin/login');
+    }
+    try {
+        const booksSnapshot = await db.collection('books').get();
+        const books = booksSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+        // Extract analytics data
+        const totalBooks = books.length;
+        const totalAuthors = new Set(books.map(book => book.author)).size;
+        const totalCategories = new Set(books.map(book => book.category)).size;
+
+        // Calculate books per owner
+        const booksPerOwner = books.reduce((acc, book) => {
+            const owner = book.owner.name;
+            if (!acc[owner]) {
+                acc[owner] = [];
+            }
+            acc[owner].push(book);
+            return acc;
+        }, {});
+
+        const owners = Object.keys(booksPerOwner);
+        const booksCount = owners.map(owner => booksPerOwner[owner].length);
+
+        res.render('analytics', {
+            totalBooks,
+            totalAuthors,
+            totalCategories,
+            owners,
+            booksCount,
+            booksPerOwner
+        });
+    } catch (error) {
+        console.error('Error fetching analytics data:', error);
+        res.status(500).send('Internal Server Error');
+    }
+}

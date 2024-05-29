@@ -42,10 +42,37 @@ const createContactLink = (baseUrl, bookId, requesterInfo) => {
   return link;
 };
 
-// Function to create the WhatsApp link
-const createWhatsAppLink = (phone, bookTitle,name) => {
+const cleanPhoneNumber = (phone) => {
+  // Remove leading zero if it's there
+  if (phone.startsWith('0')) {
+    phone = phone.substring(1);
+  }
+  // Remove non-digit characters
+  phone = phone.replace(/\D/g, '');
+  // Remove leading zero if it's there
+  if (phone.startsWith('0')) {
+    phone = phone.substring(1);
+  }
+  // If the number starts with "91" or "+91", remove the leading "91"
+  if (phone.startsWith('91')) {
+    phone = phone.substring(2);
+  } else if (phone.startsWith('+91')) {
+    phone = phone.substring(3);
+  }
+
+  // Remove leading zero if it's there
+  if (phone.startsWith('0')) {
+    phone = phone.substring(1);
+  }
+
+  return '91' + phone;
+
+};
+
+const createWhatsAppLink = (phone, bookTitle, name) => {
+  const cleanedPhone = cleanPhoneNumber(phone);
   const message = `Hello ${name}, I'm reaching out about your request for my book "${bookTitle}". Let's connect to arrange the exchange. Thanks`;
-  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  return `https://wa.me/${cleanedPhone}?text=${encodeURIComponent(message)}`;
 };
 
 // Function to create the mailto link

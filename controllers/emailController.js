@@ -89,9 +89,10 @@ export const sendAskNowEmail = async (req, res) => {
   // Fetch baseUrl from the request
   const baseUrl = `${req.protocol}://${req.get('host')}`;
 
-  const contactLink = createContactLink(baseUrl, bookId, { name, email, phone, id, class: userClass });
-  const whatsappRedirectLink = `${baseUrl}/api/confirmWhatsAppContact?bookId=${bookId}&name=${name}&email=${email}&phone=${phone}&id=${id}&class=${userClass}`;
-  const emailRedirectLink = `${baseUrl}/api/confirmEmailContact?bookId=${bookId}&name=${name}&email=${email}&phone=${phone}&id=${id}&class=${userClass}`;
+  const trackingId=`${book.title}_${new Date().toISOString()}`
+
+  const whatsappRedirectLink = `${baseUrl}/api/confirmWhatsAppContact?bookId=${bookId}&name=${name}&email=${email}&phone=${phone}&id=${id}&class=${userClass}&trackingId=${trackingId}`;
+  const emailRedirectLink = `${baseUrl}/api/confirmEmailContact?bookId=${bookId}&name=${name}&email=${email}&phone=${phone}&id=${id}&class=${userClass}&trackingId=${trackingId}`;
 
   try {
     const bookDoc = await db.collection('books').doc(bookId).get();
@@ -102,7 +103,8 @@ export const sendAskNowEmail = async (req, res) => {
     const book = bookDoc.data();
     const ownerEmail = book.owner.email;
 
-    // Email construction without test values
+
+    // Email construction 
     const mailOptions = {
       from: process.env.MAIL,
       to: ownerEmail, // Send email to the book owner
@@ -131,10 +133,11 @@ export const sendAskNowEmail = async (req, res) => {
     await transporter.sendMail(mailOptions);
 
     const currentTime = moment().tz('Asia/Kolkata').toString();
-    await db.collection('emailSent').doc(`${book.title}_${new Date().toISOString()}`).set({
+    await db.collection('emailSent').doc(trackingId).set({
       owner: book.owner.name,
       recipient: name,
-      Date_and_Time: currentTime
+      Date_and_Time: currentTime,
+      isClicked:false
     });
 
     res.status(200).json({ message: 'Request submitted successfully!' });
@@ -147,7 +150,7 @@ export const sendAskNowEmail = async (req, res) => {
 
 // Endpoint to handle WhatsApp contact confirmation
 export const confirmWhatsAppContact = async (req, res) => {
-  const { bookId, name, email, phone, id, class: userClass } = req.query;
+  const { bookId, name, email, phone, id, class: userClass ,trackingId} = req.query;
 
   try {
     // Fetch the book document from Firestore
@@ -158,26 +161,30 @@ export const confirmWhatsAppContact = async (req, res) => {
 
     const book = bookDoc.data();
 
-    const currentTime = moment().tz('Asia/Kolkata').toString();
+    const trackingIdIsClickedDoc = await db.collection('emailSent').doc(trackingId).get();
+    const trackingIdIsClicked=trackingIdIsClickedDoc.data();
 
-    await db.collection('emailReplied').doc(`${book.title}_${new Date().toISOString()}`).set({
-      owner: book.owner.name,
-      recipient: name,
-      Date_and_Time: currentTime
-    });
+    if(!trackingIdIsClicked.isClicked){
+      await db.collection('emailSent').doc(trackingId).update({ isClicked: true });
+      const currentTime = moment().tz('Asia/Kolkata').toString();
+      await db.collection('emailReplied').doc(`${book.title}_${new Date().toISOString()}`).set({
+        owner: book.owner.name,
+        recipient: name,
+        Date_and_Time: currentTime
+      });
 
-    // Create a new history entry
-    const historyEntry = {
-      timestamp: currentTime,
-      requester: { name, email, phone, id, class: userClass },
-      method:"Whatsapp"
-    };
+      // Create a new history entry
+      const historyEntry = {
+        timestamp: currentTime,
+        requester: { name, email, phone, id, class: userClass },
+        method:"Whatsapp"
+      };
 
-    // Update the book document, adding the new history entry to the history array
-    await db.collection('books').doc(bookId).update({
-      history: admin.firestore.FieldValue.arrayUnion(historyEntry)
-    });
-    
+      // Update the book document, adding the new history entry to the history array
+      await db.collection('books').doc(bookId).update({
+        history: admin.firestore.FieldValue.arrayUnion(historyEntry)
+      });
+    }
 
     // Create WhatsApp link
     const whatsappLink = createWhatsAppLink(phone,book.title,name);
@@ -192,7 +199,7 @@ export const confirmWhatsAppContact = async (req, res) => {
 
 // Endpoint to handle Email contact confirmation
 export const confirmEmailContact = async (req, res) => {
-  const { bookId, name, email, phone, id, class: userClass } = req.query;
+  const { bookId, name, email, phone, id, class: userClass,trackingId } = req.query;
 
   try {
     // Fetch the book document from Firestore
@@ -203,33 +210,40 @@ export const confirmEmailContact = async (req, res) => {
 
     const book = bookDoc.data();
 
-    const currentTime = moment().tz('Asia/Kolkata').toString();
+    const trackingIdIsClickedDoc = await db.collection('emailSent').doc(trackingId).get();
+    const trackingIdIsClicked=trackingIdIsClickedDoc.data();
+
+    if(!trackingIdIsClicked.isClicked){
+      await db.collection('emailSent').doc(trackingId).update({ isClicked: true });
+      const currentTime = moment().tz('Asia/Kolkata').toString();
     
-    await db.collection('emailReplied').doc(`${book.title}_${new Date().toISOString()}`).set({
-      owner: book.owner.name,
-      recipient: name,
-      Date_and_Time: currentTime
-    });
+      await db.collection('emailReplied').doc(`${book.title}_${new Date().toISOString()}`).set({
+        owner: book.owner.name,
+        recipient: name,
+        Date_and_Time: currentTime
+      });
 
-    // Create a new history entry
-    const historyEntry = {
-      timestamp: currentTime,
-      requester: { name, email, phone, id, class: userClass },
-      method:"Email"
-    };
+      // Create a new history entry
+      const historyEntry = {
+        timestamp: currentTime,
+        requester: { name, email, phone, id, class: userClass },
+        method:"Email"
+      };
 
-    // Update the book document, adding the new history entry to the history array
-    await db.collection('books').doc(bookId).update({
-      history: admin.firestore.FieldValue.arrayUnion(historyEntry)
-    });
+      // Update the book document, adding the new history entry to the history array
+      await db.collection('books').doc(bookId).update({
+        history: admin.firestore.FieldValue.arrayUnion(historyEntry)
+      });
 
+    }
+    
     // Create Mailto link
     const mailtoLink = createMailtoLink(email, book.title, name);
 
     // Redirect to the mailto link
     res.redirect(mailtoLink);
   } catch (error) {
-    console.log(error);
+    console.log(error); 
     res.status(500).json({ message: 'Failed to record Email contact', error });
   }
 };

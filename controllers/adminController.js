@@ -262,7 +262,7 @@ export function logout(req, res) {
             console.error('Error destroying session:', err);
             res.status(500).send('Internal Server Error');
         } else {
-            res.redirect('/admin/login');
+            res.redirect('/');
         }
     });
 }

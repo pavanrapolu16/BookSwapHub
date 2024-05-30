@@ -90,8 +90,6 @@ export const sendAskNowEmail = async (req, res) => {
   const baseUrl = `${req.protocol}://${req.get('host')}`;
 
   
-  const whatsappRedirectLink = `${baseUrl}/api/confirmWhatsAppContact?bookId=${bookId}&name=${name}&email=${email}&phone=${phone}&id=${id}&class=${userClass}&trackingId=${trackingId}`;
-  const emailRedirectLink = `${baseUrl}/api/confirmEmailContact?bookId=${bookId}&name=${name}&email=${email}&phone=${phone}&id=${id}&class=${userClass}&trackingId=${trackingId}`;
   
   try {
     const bookDoc = await db.collection('books').doc(bookId).get();
@@ -103,7 +101,10 @@ export const sendAskNowEmail = async (req, res) => {
     const ownerEmail = book.owner.email;
     
     const trackingId=`${book.title}_${new Date().toISOString()}`
-
+    
+    const whatsappRedirectLink = `${baseUrl}/api/confirmWhatsAppContact?bookId=${bookId}&name=${name}&email=${email}&phone=${phone}&id=${id}&class=${userClass}&trackingId=${trackingId}`;
+    const emailRedirectLink = `${baseUrl}/api/confirmEmailContact?bookId=${bookId}&name=${name}&email=${email}&phone=${phone}&id=${id}&class=${userClass}&trackingId=${trackingId}`;
+    
     // Email construction 
     const mailOptions = {
       from: process.env.MAIL,

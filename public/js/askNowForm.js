@@ -28,6 +28,7 @@ document.getElementById('ask-now-form').addEventListener('submit', function(even
   })
   .catch(error => {
     console.error('Error:', error);
+    hideLoading();
     alert('Failed to submit request. Please try again.');
   });
 });

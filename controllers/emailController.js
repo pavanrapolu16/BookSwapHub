@@ -89,20 +89,20 @@ export const sendAskNowEmail = async (req, res) => {
   // Fetch baseUrl from the request
   const baseUrl = `${req.protocol}://${req.get('host')}`;
 
-  const trackingId=`${book.title}_${new Date().toISOString()}`
-
+  
   const whatsappRedirectLink = `${baseUrl}/api/confirmWhatsAppContact?bookId=${bookId}&name=${name}&email=${email}&phone=${phone}&id=${id}&class=${userClass}&trackingId=${trackingId}`;
   const emailRedirectLink = `${baseUrl}/api/confirmEmailContact?bookId=${bookId}&name=${name}&email=${email}&phone=${phone}&id=${id}&class=${userClass}&trackingId=${trackingId}`;
-
+  
   try {
     const bookDoc = await db.collection('books').doc(bookId).get();
     if (!bookDoc.exists) {
       return res.status(404).json({ message: 'Book not found' });
     }
-
+    
     const book = bookDoc.data();
     const ownerEmail = book.owner.email;
-
+    
+    const trackingId=`${book.title}_${new Date().toISOString()}`
 
     // Email construction 
     const mailOptions = {

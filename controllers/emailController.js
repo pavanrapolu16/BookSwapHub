@@ -106,7 +106,7 @@ export const sendAskNowEmail = async (req, res) => {
     const emailRedirectLink = `${baseUrl}/api/confirmEmailContact?bookId=${bookId}&name=${name}&email=${email}&phone=${phone}&id=${id}&class=${userClass}&trackingId=${trackingId}`;
     
     // Email construction 
-    const mailOptions = {
+    const mailOptionsOwner = {
       from: process.env.MAIL,
       to: ownerEmail, // Send email to the book owner
       subject: `📖✨ You have Got a Book Request for "${book.title}" ✨📖`,
@@ -131,7 +131,31 @@ export const sendAskNowEmail = async (req, res) => {
       `,
     };
 
-    await transporter.sendMail(mailOptions);
+    // Email construction for the requester
+    const mailOptionsRequester = {
+      from: process.env.MAIL,
+      to: email, // Send email to the book requester
+      subject: `📖✨ Your Request for "${book.title}" Has Been Sent ✨📖`,
+      html: `
+        <div style="font-family: Arial, sans-serif; color: #333; text-align: center;">
+          <h2 style="color: #5D4037;">${generateRandomGreeting()}</h2>
+          <p style="font-size: 1.1em;">Hi ${name},</p>
+          <p style="font-size: 1.1em;">Your request for the book <strong>"${book.title}"</strong> has been successfully sent to the book owner. Below are the details of your request:</p>
+          <ul style="list-style: none; padding: 0; font-size: 1.1em; text-align: left; display: inline-block;">
+            <li><strong>Name:</strong> ${name}</li>
+            <li><strong>Email:</strong> ${email}</li>
+            <li><strong>Phone:</strong> ${phone}</li>
+            <li><strong>Class:</strong> ${userClass}</li>
+          </ul>
+          <p style="font-size: 1.1em;">We hope you enjoy your new reading adventure soon!</p>
+          <p style="font-size: 1.1em;">${generateRandomSignOff()}<br/>BookSwapHub Team<br/>📚🌟✨</p>
+        </div>
+      `,
+    };
+
+    await transporter.sendMail(mailOptionsOwner);
+    await transporter.sendMail(mailOptionsRequester);
+    
 
     const currentTime = moment().tz('Asia/Kolkata').toString();
     await db.collection('emailSent').doc(trackingId).set({

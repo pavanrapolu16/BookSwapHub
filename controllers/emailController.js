@@ -145,7 +145,7 @@ export const sendAskNowEmail = async (req, res) => {
             <li><strong>Name:</strong> ${name}</li>
             <li><strong>Email:</strong> ${email}</li>
             <li><strong>Phone:</strong> ${phone}</li>
-            <li><strong>Class:</strong> ${userClass}</li>
+            <li><strong>ID:</strong> ${id}</li>
           </ul>
           <p style="font-size: 1.1em;">We hope you enjoy your new reading adventure soon!</p>
           <p style="font-size: 1.1em;">${generateRandomSignOff()}<br/>BookSwapHub Team<br/>📚🌟✨</p>

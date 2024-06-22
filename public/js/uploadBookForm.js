@@ -118,7 +118,7 @@ document.getElementById('upload-form').addEventListener('submit', async function
             mobile: document.getElementById('mobile').value,
             email: document.getElementById('email').value,
             ID: document.getElementById('ID').value,
-            class: document.getElementById('class').value
+            class: "None"
         };
 
         const bookResponse = await fetch('/api/books/uploadToDB', {

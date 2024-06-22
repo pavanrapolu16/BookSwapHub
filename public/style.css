@@ -419,85 +419,6 @@ main {
   }
 }
 
-/* Responsive styles */
-@media (max-width: 600px) {
-  header {
-    padding: 10px; /* Adjust padding for smaller screens */
-  }
-
-  .search-upload-container {
-    flex-direction: column; /* Arrange search and upload button vertically */
-  }
-
-  #search-bar {
-    width: 100%; /* Make search bar full-width on mobile */
-  }
-
-  #upload-button {
-    width: 100%; /* Make upload button full-width on mobile */
-  }
-
-  .category-section, .language-section {
-    margin-bottom: 30px; /* Add spacing between category/language sections */
-  }
-
-  .book-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center; /* Center all book cards */
-  }
-
-  .book-card {
-    height: auto;
-    max-height: 600px;
-    width: 70%; /* Ensure two cards per row */
-    margin-bottom: 20px; /* Add spacing between book cards */
-  }
-
-  .book-card.center {
-    margin: 0 auto; /* Center the specific book card */
-    width: 70%; /* Adjust width as needed */
-  }
-
-  .book-card img {
-    width: auto;
-    max-width: 90vw;
-    height: auto; /* Ensure images maintain aspect ratio */
-    max-height: 400px; /* Limit image height for consistency */
-  }
-
-  .book-card h3 {
-    font-size: 0.9rem; /* Reduce title font size for mobile */
-  }
-
-  .book-card p {
-    font-size: 0.8rem; /* Reduce author font size for mobile */
-  }
-
-  .book-card button {
-    font-size: 0.8rem; /* Reduce button font size for mobile */
-  }
-
-  
-  footer{
-    margin-bottom: 40px;
-  }
-
-  .popup-content {
-    padding: 20px;
-    border-radius: 5px;
-    text-align: left;
-    width: 80%;
-    max-width: 600px;
-    margin: 0 auto;
-    overflow-y: auto;
-    max-height: 80%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-}
-
-
 .crop-modal {
   position: fixed;
   top: 50%;
@@ -605,4 +526,78 @@ main {
     right: 10px;
     font-size: 20px;
   }
+}
+
+
+/* Responsive styles */
+@media (max-width: 600px) {
+  header {
+    padding: 10px; /* Adjust padding for smaller screens */
+  }
+
+  .search-upload-container {
+    flex-direction: column; /* Arrange search and upload button vertically */
+  }
+
+  #search-bar {
+    width: 100%; /* Make search bar full-width on mobile */
+  }
+
+  #upload-button {
+    width: 100%; /* Make upload button full-width on mobile */
+  }
+
+  .category-section, .language-section {
+    margin-bottom: 30px; /* Add spacing between category/language sections */
+  }
+
+  .book-list {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: center;Center all book cards */
+  }
+
+  .book-card {
+    height: auto;
+    max-height: 600px;
+    width: 40%; /* Ensure two cards per row */
+    margin-bottom: 20px; /* Add spacing between book cards */
+  }
+
+  .book-card.center {
+    margin: 0 auto; /* Center the specific book card */
+    width: 70%; /* Adjust width as needed */
+  }
+
+  .book-card img {
+    width: auto;
+    max-width: 90vw;
+    height: auto; /* Ensure images maintain aspect ratio */
+    max-height: 400px; /* Limit image height for consistency */
+  }
+
+  .book-card h3 {
+    font-size: 0.9rem; /* Reduce title font size for mobile */
+  }
+
+  .book-card p {
+    font-size: 0.8rem; /* Reduce author font size for mobile */
+  }
+
+  .book-card button {
+    font-size: 0.8rem; /* Reduce button font size for mobile */
+  }
+
+
+  .popup-content {
+    padding: 20px;
+    border-radius: 5px;
+    text-align: left;
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+    overflow-y: auto;
+    max-height: 80%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  } 
 }

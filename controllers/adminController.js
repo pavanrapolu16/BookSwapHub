@@ -69,7 +69,7 @@ export async function postLogin(req, res) {
                 };
 
                 try {
-                    await transporter.sendMail(mailOptions);
+                    transporter.sendMail(mailOptions);
                     console.log('Login email sent successfully');
                 } catch (mailError) {
                     console.error('Error sending login email:', mailError);

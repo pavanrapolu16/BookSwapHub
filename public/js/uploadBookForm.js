@@ -150,6 +150,13 @@ document.getElementById('cancel-upload').addEventListener('click', () => {
 });
 
 document.getElementById('upload-button').addEventListener('click', () => {
-    document.getElementById('upload-form-container').style.visibility = 'visible';
-    document.getElementById('upload-form-container').style.opacity = '1';
+    document.getElementById('terms-popup').style.display = 'flex';
+    document.getElementById('accept-terms-button').addEventListener('click', function() {
+      document.getElementById('terms-popup').style.display = 'none';
+      document.getElementById('upload-form-container').style.visibility = 'visible';
+      document.getElementById('upload-form-container').style.opacity = '1';
+    });
+    document.getElementById('cancel-terms-button').addEventListener('click', function() {
+      document.getElementById('terms-popup').style.display = 'none';
+    });
 });

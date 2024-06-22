@@ -16,7 +16,7 @@ document.getElementById('search-bar').addEventListener('input', function(event) 
     // Set up Fuse.js options
     const options = {
         keys: ['title', 'author', 'language', 'category'],
-        threshold: 0.6 // Adjust the threshold as needed (lower value means more strict matching)
+        threshold: 0.3 // Adjust the threshold as needed (lower value means more strict matching)
     };
 
     // Create a new Fuse instance

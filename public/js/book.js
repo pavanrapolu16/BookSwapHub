@@ -33,6 +33,10 @@ function createBookCard(id, title, author, image, language, category) {
   p.textContent = author;
   bookCard.appendChild(p);
 
+  const category = document.createElement('p');
+  category.textContent = `Category : ${category}`;
+  bookCard.appendChild(category);
+
   const lang = document.createElement('p');
   lang.textContent = `Language: ${language}`;
   bookCard.appendChild(lang);

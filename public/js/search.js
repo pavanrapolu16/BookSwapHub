@@ -7,8 +7,9 @@ document.getElementById('search-bar').addEventListener('input', function(event) 
         const title = card.querySelector('h3').textContent.toLowerCase();
         const author = card.querySelector('p').textContent.toLowerCase();
         const language = card.querySelector('p:nth-child(4)').textContent.toLowerCase();
-
-        if (title.includes(searchTerm) || author.includes(searchTerm) || language.includes(searchTerm)) {
+        const category=card.querySelector('p:nth-child(4)').textContent.toLowerCase();
+        console.log(category);
+        if (title.includes(searchTerm) || author.includes(searchTerm) || language.includes(searchTerm) || category.includes(searchTerm)) {
             card.style.display = 'block';
             booksFound = true;
         } else {

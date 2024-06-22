@@ -68,7 +68,13 @@ document.getElementById('crop-button').addEventListener('click', function() {
 });
 
 document.getElementById('cancel-crop').addEventListener('click', function() {
-    document.getElementById('crop-modal').style.display = 'none';
+  document.getElementById('crop-image').src = '';
+  document.getElementById('image').value = '';
+  if (cropper) {
+      cropper.destroy();
+      cropper = null;
+  }
+  document.getElementById('crop-modal').style.display = 'none';
 });
 
 // Book upload form handling

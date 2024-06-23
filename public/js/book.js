@@ -46,7 +46,8 @@ function createBookCard(id, title, author, image, language, category) {
   const button = document.createElement('button');
   button.id="ask-now-button"
   button.textContent = 'Ask Now';
-  button.style.marginRight="10px"
+  button.style.paddingRight="11%"
+  button.style.paddingLeft="11%"
   button.addEventListener('click', function() {
     document.getElementById('terms-popup').style.display = 'flex';
     document.getElementById('accept-terms-button').addEventListener('click', function() {
@@ -64,7 +65,7 @@ function createBookCard(id, title, author, image, language, category) {
   const viewMorebutton = document.createElement('button');
   viewMorebutton.id="view-more-button"
   viewMorebutton.textContent = 'View More';
-  viewMorebutton.style.marginLeft="10px"
+  // viewMorebutton.style.marginLeft="10px"
   viewMorebutton.dataset.bookId=id;
   viewMorebutton.addEventListener('click', () => {
     const bookId = viewMorebutton.dataset.bookId;

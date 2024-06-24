@@ -32,6 +32,7 @@ function createBookCard(id, title, author, image, language, category) {
   const p = document.createElement('p');
   p.textContent = author;
   bookCard.appendChild(p);
+  // p.style.display="None";
 
   const lang = document.createElement('p');
   lang.textContent = `Language: ${language}`;
@@ -40,6 +41,7 @@ function createBookCard(id, title, author, image, language, category) {
   const categories = document.createElement('p');
   categories.textContent = `Category : ${category}`;
   bookCard.appendChild(categories);
+  categories.style.display="None";
 
   const newBox=document.createElement('div');
 

@@ -7,7 +7,7 @@ document.getElementById('ask-now-form').addEventListener('submit', function(even
     email: document.getElementById('ask-now-email').value,
     phone: document.getElementById('ask-now-phone').value,
     id: document.getElementById('ask-now-id').value,
-    class: document.getElementById('ask-now-class').value
+    class: "None"
   };
 
   fetch('/api/ask-now', {

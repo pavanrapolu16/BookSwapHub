@@ -155,6 +155,8 @@ document.getElementById('upload-button').addEventListener('click', () => {
       document.getElementById('terms-popup').style.display = 'none';
       document.getElementById('upload-form-container').style.visibility = 'visible';
       document.getElementById('upload-form-container').style.opacity = '1';
+      document.getElementById('ask-now-form-container').style.visibility = 'hidden';
+      document.getElementById('ask-now-form-container').style.opacity = '0';
     });
     document.getElementById('cancel-terms-button').addEventListener('click', function() {
       document.getElementById('terms-popup').style.display = 'none';

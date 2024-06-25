@@ -56,6 +56,8 @@ function createBookCard(id, title, author, image, language, category) {
       document.getElementById('terms-popup').style.display = 'none';
       document.getElementById('ask-now-form-container').style.visibility = 'visible';
       document.getElementById('ask-now-form-container').style.opacity = '1';
+      document.getElementById('upload-form-container').style.visibility = 'hidden';
+      document.getElementById('upload-form-container').style.opacity = '0';
     });
     document.getElementById('cancel-terms-button').addEventListener('click', function() {
       document.getElementById('terms-popup').style.display = 'none';

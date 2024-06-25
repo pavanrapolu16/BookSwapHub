@@ -66,11 +66,11 @@
       <label for="ask-now-phone">Phone Number</label>
       <input type="tel" id="ask-now-phone" name="ask-now-phone" required>
 
-      <label for="ask-now-id">ID</label>
+      <label for="ask-now-id">Student ID</label>
       <input type="text" id="ask-now-id" name="ask-now-id" required>
 
-      <label for="ask-now-class">Class</label>
-      <input type="text" id="ask-now-class" name="ask-now-class" required>
+      <!-- <label for="ask-now-class">Class</label>
+      <input type="text" id="ask-now-class" name="ask-now-class" required> -->
 
       <button type="submit">Submit</button>
       <button type="button" id="cancel-ask-now">Cancel</button>
@@ -130,7 +130,7 @@
         email: document.getElementById('ask-now-email').value,
         phone: document.getElementById('ask-now-phone').value,
         id: document.getElementById('ask-now-id').value,
-        class: document.getElementById('ask-now-class').value
+        class: "None"
       };
 
       console.log(askNowData.bookId)

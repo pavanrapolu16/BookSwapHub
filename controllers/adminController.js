@@ -92,7 +92,7 @@ export async function getDashboard(req, res) {
         return res.redirect('/admin/login');
     }
     try {
-        const booksSnapshot = await db.collection('books').orderBy('title').get();
+        const booksSnapshot = await db.collection('books').orderBy('createdAt', 'desc').get();
         const books = booksSnapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data()

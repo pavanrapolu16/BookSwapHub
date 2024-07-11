@@ -152,12 +152,41 @@ export const sendAskNowEmail = async (req, res) => {
         </div>
       `,
     };
-
-    await transporter.sendMail(mailOptionsOwner);
-    await transporter.sendMail(mailOptionsRequester);
     
 
     const currentTime = moment().tz('Asia/Kolkata').toString();
+    // Email construction for the requester
+    const mailOptionsAdmin = {
+      from: process.env.MAIL,
+      to: "pavanrapolu16@gmai.com", // Send email to the book requester
+      subject: `A Request is made for "${book.title}" at "${currentTime}" ✨📖`,
+      html: `
+        <div style="font-family: Arial, sans-serif; color: #333; text-align: center;">
+          <p style="font-size: 1.1em;">A request for the book <strong>"${book.title}"</strong> has been successfully sent to the book owner. Below are the details of your request:</p>
+          <ul style="list-style: none; padding: 0; font-size: 1.1em; text-align: left; display: inline-block;">
+            <li><strong>Name:</strong> ${name}</li>
+            <li><strong>Email:</strong> ${email}</li>
+            <li><strong>Phone:</strong> ${phone}</li>
+            <li><strong>ID:</strong> ${id}</li>
+          </ul>
+          <p> Owner Details</p>
+          <ul style="list-style: none; padding: 0; font-size: 1.1em; text-align: left; display: inline-block;">
+            <li><strong>Name:</strong> ${book.owner.name}</li>
+            <li><strong>Email:</strong> ${book.owner.email}</li>
+            <li><strong>Phone:</strong> ${book.owner.mobile}</li>
+            <li><strong>ID:</strong> ${book.owner.ID}</li>
+          </ul>
+          <p style="font-size: 1.1em;">We hope you enjoy your new reading adventure soon!</p>
+          <p style="font-size: 1.1em;">${generateRandomSignOff()}<br/>BookSwapHub Team<br/>📚🌟✨</p>
+        </div>
+      `,
+    };
+
+    await transporter.sendMail(mailOptionsRequester);
+    await transporter.sendMail(mailOptionsOwner);
+    await transporter.sendMail(mailOptionsAdmin);
+    
+
     await db.collection('emailSent').doc(trackingId).set({
       owner: book.owner.name,
       recipient: name,

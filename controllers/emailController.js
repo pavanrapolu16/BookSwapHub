@@ -158,7 +158,7 @@ export const sendAskNowEmail = async (req, res) => {
     // Email construction for the requester
     const mailOptionsAdmin = {
       from: process.env.MAIL,
-      to: "pavanrapolu16@gmai.com", // Send email to the book requester
+      to: "pavanrapolu16@gmail.com", // Send email to the book requester
       subject: `A Request is made for "${book.title}" at "${currentTime}" ✨📖`,
       html: `
         <div style="font-family: Arial, sans-serif; color: #333; text-align: center;">
@@ -182,9 +182,27 @@ export const sendAskNowEmail = async (req, res) => {
       `,
     };
 
-    await transporter.sendMail(mailOptionsRequester);
-    await transporter.sendMail(mailOptionsOwner);
-    await transporter.sendMail(mailOptionsAdmin);
+    try {
+      await transporter.sendMail(mailOptionsRequester);
+      console.log('Email sent to requester');
+    } catch (err) {
+      console.error('Error sending email to requester:', err);
+    }
+    
+    try {
+      await transporter.sendMail(mailOptionsOwner);
+      console.log('Email sent to owner');
+    } catch (err) {
+      console.error('Error sending email to owner:', err);
+    }
+    
+    try {
+      await transporter.sendMail(mailOptionsAdmin);
+      console.log('Email sent to admin');
+    } catch (err) {
+      console.error('Error sending email to admin:', err);
+    }
+    
     
 
     await db.collection('emailSent').doc(trackingId).set({
